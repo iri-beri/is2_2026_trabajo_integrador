@@ -182,6 +182,7 @@ El sistema deberá:
 - **RF-26**: El sistema deberá permitir registro de usuarios.
 - **RF-27**: El sistema deberá permitir autenticación (login).
 - **RF-28**: El sistema deberá gestionar roles (estudiante, profesor, administrador).
+- **RF-28.1**: El admin deberá registrar/validar por primera vez a los usuarios
 - **RF-29**: El sistema deberá restringir funcionalidades según el rol.
 
 ---
