@@ -65,6 +65,7 @@ El mayor riesgo del sistema se concentra en:
 | T2 | Técnico | Dificultad de comprobación de correlativas | Alta | Alto | 🔴 Alto |
 | O1 | Organizacional | Pérdida de un miembro del equipo | Baja | Alto | 🟠 Medio |
 | O2 | Organizacional | Falta de experiencia | Alta | Medio | 🟠 Medio |
+| O3 | Organizacional | Incorporacion de miembro con proyecto empezado | Medio | Alto | 🟠 Medio |
 | P1 | Planificación | Subestimación del esfuerzo | Alta | Alto | 🔴 Alto |
 | P2 | Planificación | Cambios de alcance | Alta | Alto | 🔴 Alto |
 | H1 | Humano | Falta de motivación | Media | Medio | 🟠 Medio |
