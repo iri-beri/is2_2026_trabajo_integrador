@@ -153,7 +153,7 @@ El sistema deberá cubrir la gestión de estudiantes, docentes, materias, inscri
 
 ### Base de Datos
 **SQLite**
-- Adecuada para proyectos academicos
+- Adecuada para proyectos académicos
 - Relacional
 - Adecuada para integridad referencial
 
