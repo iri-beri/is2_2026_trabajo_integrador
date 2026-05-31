@@ -78,3 +78,17 @@ CREATE TABLE IF NOT EXISTS administrators (
     FOREIGN KEY (person_id) REFERENCES persons(id)
     ON DELETE CASCADE
 );
+
+-- =============================================================
+-- SUBJECTS
+-- =============================================================
+CREATE TABLE subjects (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    code            INTEGER NOT NULL UNIQUE,
+    name            TEXT    NOT NULL,
+    course_syllabus TEXT,
+    hours           INTEGER NOT NULL,
+ 
+    created_at      DATETIME,
+    updated_at      DATETIME
+);
