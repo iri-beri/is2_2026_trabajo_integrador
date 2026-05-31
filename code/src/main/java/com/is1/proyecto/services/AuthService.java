@@ -55,8 +55,6 @@ public class AuthService {
         personRole.setRole(dto.role);
         personRole.saveIt();
 
-        // temporal
-        System.out.println("ROLE RECIBIDO = " + dto.role);
         // -------------------------------------------------------
         // SUBCLASS TABLE
         // -------------------------------------------------------
