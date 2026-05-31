@@ -1,9 +1,7 @@
 package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
-import com.is1.proyecto.routes.ProfessorRoutes;
-import com.is1.proyecto.routes.StudentRoutes;
-import com.is1.proyecto.routes.UserRoutes;
+import com.is1.proyecto.routes.*;
 import com.is1.proyecto.controllers.AdminController;
 import com.is1.proyecto.services.AuthService;
 

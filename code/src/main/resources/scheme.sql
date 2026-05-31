@@ -88,7 +88,7 @@ CREATE TABLE subjects (
     name            TEXT    NOT NULL,
     course_syllabus TEXT,
     hours           INTEGER NOT NULL,
- 
+
     created_at      DATETIME,
     updated_at      DATETIME
 );
