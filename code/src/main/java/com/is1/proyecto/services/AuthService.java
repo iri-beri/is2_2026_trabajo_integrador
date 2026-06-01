@@ -4,11 +4,15 @@ import com.is1.proyecto.models.Administrator;
 import com.is1.proyecto.models.Person;
 import com.is1.proyecto.models.PersonRole;
 import com.is1.proyecto.models.Professor;
+import com.is1.proyecto.models.Role;
 import com.is1.proyecto.models.Student;
 import com.is1.proyecto.services.dto.PersonCreateDTO;
 import com.is1.proyecto.services.dto.PersonLoginDTO;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AuthService {
 
@@ -61,14 +65,12 @@ public class AuthService {
         switch (dto.role) {
 
             case ADMIN -> {
-
                 Administrator administrator = new Administrator();
                 administrator.setPersonId(personId);
                 administrator.saveIt();
             }
 
             case PROFESSOR -> {
-
                 Professor professor = new Professor();
                 professor.setPersonId(personId);
                 professor.saveIt();
@@ -88,23 +90,19 @@ public class AuthService {
         return savedPerson;
     }
 
-
     // -----------------------------------------------------------
     // LOGIN
     // Autentica un usuario.
     // Devuelve la Person si las credenciales son correctas.
-    // Lanza ServiceException en cualquier caso de fallo
-    // (mensaje genérico para no dar pistas de seguridad).
+    // Lanza ServiceException en cualquier caso de fallo.
     // -----------------------------------------------------------
     public Person login(PersonLoginDTO dto) {
-        
+
         validateFields(dto.username, dto.password);
 
         Person person = Person.findFirst("username = ?", dto.username);
 
         if (person == null || !BCrypt.checkpw(dto.password, person.getPassword())) {
-            // Mismo mensaje para usuario inexistente y contraseña incorrecta:
-            // no revelar cuál de los dos falló.
             throw new ServiceException("Usuario o contraseña incorrectos.", 401);
         }
 
@@ -112,21 +110,35 @@ public class AuthService {
     }
 
     // -----------------------------------------------------------
+    // GET ROLES
+    // Devuelve la lista de roles registrados para una persona.
+    // -----------------------------------------------------------
+    public List<Role> getRoles(Long personId) {
+
+        List<PersonRole> personRoles = PersonRole.where("person_id = ?", personId);
+
+        if (personRoles == null || personRoles.isEmpty()) {
+            throw new ServiceException("La persona no tiene roles asignados.", 403);
+        }
+
+        return personRoles.stream()
+                .map(pr -> pr.getRole())
+                .collect(Collectors.toList());
+    }
+
+    // -----------------------------------------------------------
     // VALIDACIONES
     // -----------------------------------------------------------
     private void validateFields(String username, String password) {
-        
+
         if (isBlank(username) || isBlank(password)) {
             throw new ServiceException(
                 "Nombre y contraseña son requeridos.", 400);
         }
     }
 
-    // -----------------------------------------------------------
-    // Verifica que el username de la Persona no esté tomado.
-    // -----------------------------------------------------------
     private void checkUsernameAvailable(String username) {
-        
+
         if (Person.findFirst("username = ?", username) != null) {
             throw new ServiceException(
                 "El nombre de usuario ya está en uso.", 409);
