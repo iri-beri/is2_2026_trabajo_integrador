@@ -45,6 +45,7 @@ public class App {
         new StudentRoutes().register();
         new SubjectRoutes().register();
         new CareerRoutes().register();
+        new StudyPlanRoutes().register();
     }
 
     // -----------------------------------------------------------
