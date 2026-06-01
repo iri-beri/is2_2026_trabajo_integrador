@@ -21,9 +21,6 @@ public class StudentService {
     // -----------------------------------------------------------
     public Student createStudent(StudentCreateDTO dto) {
 
-        // Temporal
-        System.out.println("ROLE EN STUDENT CONTROLLER = " + dto.role);
-        
         // PASO 1: Validar campos obligatorios y formatos
         validateFields(dto);
 

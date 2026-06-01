@@ -29,7 +29,7 @@
                 <h2 class="text-2xl font-semibold text-blue-800 mb-3">Tu Perfil</h2>
                 <p class="text-gray-600 mb-4">Gestiona la información de tu cuenta personal.</p>
                 <a href="/profile"
-                   class="inline-block bg-blue-600 text-white py-2 px-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 shadow-lg">
+                    class="inline-block bg-blue-600 text-white py-2 px-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 shadow-lg">
                     Ver Perfil
                 </a>
             </div>
@@ -37,7 +37,7 @@
                 <h2 class="text-2xl font-semibold text-green-800 mb-3">Configuraciones</h2>
                 <p class="text-gray-600 mb-4">Ajusta las preferencias de la aplicación.</p>
                 <a href="/settings"
-                   class="inline-block bg-green-600 text-white py-2 px-4 rounded-full font-medium hover:bg-green-700 transition duration-300 shadow-lg">
+                    class="inline-block bg-green-600 text-white py-2 px-4 rounded-full font-medium hover:bg-green-700 transition duration-300 shadow-lg">
                     Configuración
                 </a>
             </div>
@@ -87,16 +87,13 @@
             </div>
         </div>
 
-        <!-- Cerrar sesión — POST para seguridad -->
+        <!-- Botón de Cerrar Sesión (al final) -->
         <div class="text-center mt-8">
-            <form action="/logout" method="post">
-                <button type="submit"
-                        class="inline-block bg-red-600 text-white py-2 px-6 rounded-full font-medium hover:bg-red-700 transition duration-300 text-lg shadow-md">
-                    Cerrar Sesión
-                </button>
-            </form>
+            <a href="/logout" class="inline-block bg-red-600 text-white py-2 px-6 rounded-full font-medium hover:bg-red-700 transition duration-300 text-lg shadow-md">
+                Cerrar Sesión
+            </a>
         </div>
-
     </div>
+
 </body>
 </html>
