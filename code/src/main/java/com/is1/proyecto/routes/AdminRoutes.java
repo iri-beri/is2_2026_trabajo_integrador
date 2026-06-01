@@ -14,12 +14,12 @@ public class AdminRoutes {
     }
 
     // -----------------------------------------------------------
-    // Rutas de administración
+    // Rutas del administrador
     // -----------------------------------------------------------
     public void register() {
-        get("/admin/create",  controller::showCreateAdminForm);
-        get("/user/created",  controller::showUserCreated);
-        get("/dashboard",     controller::showDashboard);
-        post("/admin/new",    controller::createAdmin);
+        get("/dashboard/admin", controller::showDashboard);
+        get("/admin/create",    controller::showCreateAdminForm);
+        get("/user/created",    controller::showUserCreated);
+        post("/admin/new",      controller::createAdmin);
     }
 }
