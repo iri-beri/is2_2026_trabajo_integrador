@@ -53,6 +53,7 @@ public class App {
         new SettingsRoutes().register();
         new SubjectRoutes().register();
         new CareerRoutes().register();
+        new StudyPlanRoutes().register();
     }
 
     // -----------------------------------------------------------

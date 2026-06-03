@@ -104,3 +104,15 @@ CREATE TABLE IF NOT EXISTS careers (
     created_at  DATETIME,
     updated_at  DATETIME
 );
+
+-- =============================================================
+-- PLANS
+-- =============================================================
+CREATE TABLE IF NOT EXISTS plans (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    NOT NULL,
+    version     TEXT    NOT NULL,
+
+    created_at  DATETIME,
+    updated_at  DATETIME
+);
