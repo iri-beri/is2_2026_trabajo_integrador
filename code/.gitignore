@@ -30,3 +30,6 @@ db/*.db
 
 # OS
 .DS_Store
+
+#Users test
+testUsers.md

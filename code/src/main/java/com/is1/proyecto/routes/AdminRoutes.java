@@ -20,10 +20,13 @@ public class AdminRoutes {
         controller = new AdminController(service, templateEngine);
     }
 
+    // -----------------------------------------------------------
+    // Rutas del administrador
+    // -----------------------------------------------------------
     public void register() {
-
-        get("/admin/create", controller::showCreateAdminForm);
-
-        post("/admin/new", controller::createAdmin);
+        get("/dashboard/admin", controller::showDashboard);
+        get("/admin/create",    controller::showCreateAdminForm);
+        get("/user/created",    controller::showUserCreated);
+        post("/admin/new",      controller::createAdmin);
     }
 }
