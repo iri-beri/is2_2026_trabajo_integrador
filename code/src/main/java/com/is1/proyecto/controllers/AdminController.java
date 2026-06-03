@@ -2,6 +2,7 @@ package com.is1.proyecto.controllers;
 
 import com.is1.proyecto.models.Person;
 import com.is1.proyecto.models.Role;
+
 import com.is1.proyecto.services.AuthService;
 import com.is1.proyecto.services.ServiceException;
 import com.is1.proyecto.services.dto.PersonCreateDTO;
@@ -52,7 +53,7 @@ public class AdminController extends BaseController {
         Map<String, Object> model = new HashMap<>();
         addFlashMessages(req, model);
 
-        return templateEngine.render(new ModelAndView(model, "user_form.mustache"));
+        return templateEngine.render(new ModelAndView(model,"user_form.mustache"));
     }
 
     // -----------------------------------------------------------
@@ -65,6 +66,7 @@ public class AdminController extends BaseController {
         try {
 
             UserValidator.validate(dto);
+
             Person person = authService.createPerson(dto);
             loginUser(req, person);
             req.session().attribute("userRole", Role.ADMIN.name());
@@ -73,11 +75,13 @@ public class AdminController extends BaseController {
         } catch (ServiceException e) {
 
             res.status(e.getStatusCode());
+
             res.redirect("/admin/create?error=" + encode(e.getMessage()));
 
         } catch (Exception e) {
 
             res.status(500);
+
             res.redirect("/admin/create?error=" + encode("Error interno. Intente de nuevo."));
         }
 

@@ -11,19 +11,22 @@ public class AuthRoutes {
 
     private final AuthController controller;
 
-    public AuthRoutes(AuthController controller) {
-        this.controller = controller;
+    public AuthRoutes() {
+
+        AuthService service = new AuthService();
+        MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
+
+        controller = new AuthController( service, templateEngine);
     }
 
-    // -----------------------------------------------------------
-    // Rutas de autenticación
-    // -----------------------------------------------------------
     public void register() {
-        get("/",            controller::showLoginForm);
-        get("/login",       controller::showLoginForm);
-        post("/login",      controller::login);
-        get("/login/role",  controller::showRoleSelector);
-        post("/login/role", controller::selectRole);
-        post("/logout",     controller::logout);
+
+        get("/", controller::showLoginForm);
+
+        get("/login", controller::showLoginForm);
+
+        post("/login", controller::login);
+
+        get("/logout", controller::logout);
     }
 }

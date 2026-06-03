@@ -3,10 +3,14 @@ package com.is1.proyecto;
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.routes.*;
 import com.is1.proyecto.controllers.AdminController;
-import com.is1.proyecto.controllers.AuthController;
-import com.is1.proyecto.controllers.ProfessorDashboardController;
-import com.is1.proyecto.controllers.StudentDashboardController;
+import com.is1.proyecto.controllers.ProfessorController;
+import com.is1.proyecto.controllers.ProfileController;
+import com.is1.proyecto.controllers.SettingsController;
+import com.is1.proyecto.controllers.StudentController;
 import com.is1.proyecto.services.AuthService;
+import com.is1.proyecto.services.ProfessorService;
+import com.is1.proyecto.services.SettingsService;
+import com.is1.proyecto.services.StudentService;
 
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -35,21 +39,17 @@ public class App {
         // 4. Filtros de conexión por request
         configureFilters(dbConfig);
 
-     // 5. Dependencias compartidas
+        // 5. Registro de rutas
+
+        // Dependencias compartidas
         AuthService authService = new AuthService();
         MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
- 
-        AuthController authController = new AuthController(authService, templateEngine);
-        AdminController adminController = new AdminController(authService, templateEngine);
-        ProfessorDashboardController professorDashboard = new ProfessorDashboardController(templateEngine);
-        StudentDashboardController studentDashboard = new StudentDashboardController(templateEngine);
- 
-        // 6. Registro de rutas
-        new AuthRoutes(authController).register();
-        new AdminRoutes(adminController).register();
-        new ProfessorDashboardRoutes(professorDashboard).register();
-        new StudentDashboardRoutes(studentDashboard).register();
+
+        new AuthRoutes().register();
+        new DashboardRoutes().register();
+        new AdminRoutes().register();
         new ProfessorRoutes().register();
+        new StudentRoutes().register();
         new SubjectRoutes().register();
         new CareerRoutes().register();
         new StudyPlanRoutes().register();

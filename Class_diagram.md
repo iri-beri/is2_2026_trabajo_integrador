@@ -1,4 +1,4 @@
-::: mermaid
+``` mermaid
 classDiagram
     class Person {
         +String dni
@@ -86,4 +86,4 @@ classDiagram
     %% Student-Degree Relationship
     Student "1" -- "1..*" Registration_Degree
     Registration_Degree "*" -- "1" Degree
-:::
+```
