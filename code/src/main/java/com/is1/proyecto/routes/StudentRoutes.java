@@ -2,6 +2,7 @@ package com.is1.proyecto.routes;
 
 import com.is1.proyecto.controllers.StudentController;
 import com.is1.proyecto.services.StudentService;
+
 import spark.template.mustache.MustacheTemplateEngine;
 
 import static spark.Spark.get;
@@ -15,7 +16,8 @@ public class StudentRoutes {
         // Acá se ensamblan las dependencias: Service → Controller
         StudentService service = new StudentService();
         MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
-        this.controller = new StudentController(service, templateEngine);
+
+        controller = new StudentController(service, templateEngine);
     }
 
     // -----------------------------------------------------------
