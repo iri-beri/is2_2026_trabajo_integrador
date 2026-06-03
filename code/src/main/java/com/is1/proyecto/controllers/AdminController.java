@@ -26,12 +26,31 @@ public class AdminController extends BaseController {
     }
 
     // -----------------------------------------------------------
+    // GET /dashboard/admin
+    // -----------------------------------------------------------
+    public String showDashboard(Request req, Response res) {
+
+        String username = req.session().attribute("currentUserUsername");
+        Boolean loggedIn = req.session().attribute("loggedIn");
+        String role = req.session().attribute("userRole");
+
+        if (username == null || loggedIn == null || !loggedIn || !"ADMIN".equals(role)) {
+            res.redirect("/login?error=" + encode("Acceso no autorizado."));
+            return "";
+        }
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("username", username);
+
+        return templateEngine.render(new ModelAndView(model, "dashboard.mustache"));
+    }
+
+    // -----------------------------------------------------------
     // GET /admin/create
     // -----------------------------------------------------------
     public String showCreateAdminForm(Request req, Response res) {
 
         Map<String, Object> model = new HashMap<>();
-
         addFlashMessages(req, model);
 
         return templateEngine.render(new ModelAndView(model,"user_form.mustache"));
@@ -49,9 +68,8 @@ public class AdminController extends BaseController {
             UserValidator.validate(dto);
 
             Person person = authService.createPerson(dto);
-
             loginUser(req, person);
-
+            req.session().attribute("userRole", Role.ADMIN.name());
             redirectToSuccess(res, person.getName(), "Administrador creado exitosamente", true);
 
         } catch (ServiceException e) {
@@ -70,19 +88,22 @@ public class AdminController extends BaseController {
         return "";
     }
 
+    // -----------------------------------------------------------
+    // BUILDER
+    // -----------------------------------------------------------
     private PersonCreateDTO buildAdminDTO(Request req) {
 
         PersonCreateDTO dto = new PersonCreateDTO();
 
-        dto.dni = req.queryParams("dni");
-        dto.name = req.queryParams("name");
-        dto.surname = req.queryParams("surname");
+        dto.dni      = req.queryParams("dni");
+        dto.name     = req.queryParams("name");
+        dto.surname  = req.queryParams("surname");
         dto.username = req.queryParams("username");
-        dto.email = req.queryParams("email");
+        dto.email    = req.queryParams("email");
         dto.cellphone = req.queryParams("cellphone");
         dto.birthdate = req.queryParams("birthdate");
         dto.password = req.queryParams("password");
-        dto.role = Role.ADMIN;
+        dto.role     = Role.ADMIN;
 
         return dto;
     }

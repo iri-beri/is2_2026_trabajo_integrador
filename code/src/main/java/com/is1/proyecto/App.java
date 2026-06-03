@@ -2,16 +2,7 @@ package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.routes.*;
-import com.is1.proyecto.controllers.AdminController;
-import com.is1.proyecto.controllers.ProfessorController;
-import com.is1.proyecto.controllers.ProfileController;
-import com.is1.proyecto.controllers.SettingsController;
-import com.is1.proyecto.controllers.StudentController;
-import com.is1.proyecto.services.AuthService;
-import com.is1.proyecto.services.ProfessorService;
-import com.is1.proyecto.services.SettingsService;
-import com.is1.proyecto.services.StudentService;
-
+import com.is1.proyecto.services.*;
 import spark.template.mustache.MustacheTemplateEngine;
 
 import org.javalite.activejdbc.Base;
@@ -42,6 +33,7 @@ public class App {
         // 5. Registro de rutas
 
         // Dependencias compartidas
+        AuthService authService = new AuthService();
         MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
 
         new AuthRoutes().register();
@@ -49,8 +41,6 @@ public class App {
         new AdminRoutes().register();
         new ProfessorRoutes().register();
         new StudentRoutes().register();
-        new ProfileRoutes().register();
-        new SettingsRoutes().register();
         new SubjectRoutes().register();
         new CareerRoutes().register();
         new StudyPlanRoutes().register();

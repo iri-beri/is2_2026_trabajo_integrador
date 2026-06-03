@@ -2,7 +2,6 @@ package com.is1.proyecto.routes;
 
 import com.is1.proyecto.controllers.AuthController;
 import com.is1.proyecto.services.AuthService;
-
 import spark.template.mustache.MustacheTemplateEngine;
 
 import static spark.Spark.get;

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Rol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
+
+        <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-2">
+            Bienvenido
+        </h1>
+        <p class="text-center text-gray-500 mb-8">
+            Tu cuenta tiene múltiples roles. ¿Con cuál querés ingresar?
+        </p>
+
+        {{#errorMessage}}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
+        <form action="/login/role" method="post" class="space-y-4">
+            {{#roles}}
+            <button type="submit"
+                    name="role"
+                    value="{{name}}"
+                    class="w-full bg-blue-600 text-white py-3 px-6 rounded-full font-bold text-lg shadow-md hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+                Ingresar como {{label}}
+            </button>
+            {{/roles}}
+        </form>
+
+        <div class="text-center mt-6">
+            <a href="/login"
+               class="text-blue-600 hover:underline text-sm">
+                Volver al inicio de sesión
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

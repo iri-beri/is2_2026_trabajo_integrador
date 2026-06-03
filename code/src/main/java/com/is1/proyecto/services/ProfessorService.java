@@ -17,30 +17,41 @@ public class ProfessorService {
 
     // -----------------------------------------------------------
     // Método público principal: recibe un DTO, devuelve el Professor creado.
-    // El Controller solo llama a esto. No sabe nada de lo que pasa adentro.
+    // El Controller solo llama a esto.
+    //
+    // Responsabilidades:
+    //   AuthService  → Person + PersonRole(PROFESSOR)
+    //   ProfessorService → fila professors con todos sus campos
     // -----------------------------------------------------------
     public Professor createProfessor(ProfessorCreateDTO dto) {
 
         // PASO 1: Validar campos obligatorios y formatos
         validateFields(dto);
 
-        // PASO 2: AuthService crea: Person, PersonRole(PROFESSOR), Professor
+        // PASO 2: AuthService crea Person + PersonRole.
+        //         NO crea la fila en professors (ver AuthService.createPerson).
         Person person = authService.createPerson(dto);
 
-        // PASO 3: Recuperamos el Professor creado por AuthService
-        Professor.update("degree = ?, graduate_univ = ?, position = ?", "person_id = ?", dto.degree,
-                    dto.university, dto.position, person.getLongId());
+        // PASO 3: Creamos el Professor completo en un solo saveIt().
+        //         Así evitamos el UPDATE posterior que era la fuente del error.
+        Professor professor = new Professor();
+        professor.setPersonId(person.getLongId());
+        professor.setDegree(dto.degree);
+        professor.setGraduateUniv(dto.university);
+        professor.setPosition(dto.position);
+        professor.saveIt();
 
-        return Professor.findFirst("person_id = ?", person.getLongId());
+        return professor;
     }
 
     // -----------------------------------------------------------
-    // Validaciones de formato y presencia
+    // Validaciones de formato y presencia.
     // Lanza ServiceException(400) si algo está mal.
     // -----------------------------------------------------------
     private void validateFields(ProfessorCreateDTO dto) {
-        if (isBlank(dto.name) || isBlank(dto.surname) || isBlank(dto.email) || isBlank(dto.dni)
-            || isBlank(dto.username) || isBlank(dto.password)) {
+
+        if (isBlank(dto.name) || isBlank(dto.surname) || isBlank(dto.email)
+                || isBlank(dto.dni) || isBlank(dto.username) || isBlank(dto.password)) {
             throw new ServiceException(
                 "Todos los campos obligatorios son requeridos.", 400);
         }
