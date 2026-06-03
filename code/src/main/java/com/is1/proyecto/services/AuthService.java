@@ -3,9 +3,7 @@ package com.is1.proyecto.services;
 import com.is1.proyecto.models.Administrator;
 import com.is1.proyecto.models.Person;
 import com.is1.proyecto.models.PersonRole;
-import com.is1.proyecto.models.Professor;
 import com.is1.proyecto.models.Role;
-import com.is1.proyecto.models.Student;
 import com.is1.proyecto.services.dto.PersonCreateDTO;
 import com.is1.proyecto.services.dto.PersonLoginDTO;
 
@@ -17,8 +15,10 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     // -----------------------------------------------------------
-    // Registra una nueva persona.
-    // Devuelve la Person creada.
+    // Registra una nueva persona: Person + PersonRole + subtabla.
+    // Para PROFESSOR la subtabla la crea ProfessorService,
+    // que es quien tiene el DTO completo con degree/university/position.
+    // Devuelve la Person guardada.
     // -----------------------------------------------------------
     public Person createPerson(PersonCreateDTO dto) {
 
@@ -61,6 +61,8 @@ public class AuthService {
 
         // -------------------------------------------------------
         // SUBCLASS TABLE
+        // PROFESSOR y STUDENT se omiten aquí: cada Service especializado
+        // crea su fila con todos los campos en un solo saveIt().
         // -------------------------------------------------------
         switch (dto.role) {
 
@@ -71,15 +73,11 @@ public class AuthService {
             }
 
             case PROFESSOR -> {
-                Professor professor = new Professor();
-                professor.setPersonId(personId);
-                professor.saveIt();
+                // Delegado a ProfessorService.createProfessor()
             }
 
             case STUDENT -> {
-                Student student = new Student();
-                student.setPersonId(personId);
-                student.saveIt();
+                // Delegado a StudentService.createStudent()
             }
 
             default -> {

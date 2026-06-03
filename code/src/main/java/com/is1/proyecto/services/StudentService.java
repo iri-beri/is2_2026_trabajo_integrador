@@ -9,6 +9,7 @@ public class StudentService {
     private static final String EMAIL_REGEX =
         "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*" +
         "@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
     private final AuthService authService;
 
     public StudentService() {
@@ -17,31 +18,41 @@ public class StudentService {
 
     // -----------------------------------------------------------
     // Método público principal: recibe un DTO, devuelve el Student creado.
-    // El Controller solo llama a esto. No sabe nada de lo que pasa adentro.
+    // El Controller solo llama a esto.
+    //
+    // Responsabilidades:
+    //   AuthService     → Person + PersonRole(STUDENT)
+    //   StudentService  → fila students con todos sus campos
     // -----------------------------------------------------------
     public Student createStudent(StudentCreateDTO dto) {
 
         // PASO 1: Validar campos obligatorios y formatos
         validateFields(dto);
 
-        // PASO 2: AuthService crea: Person, PersonRole(STUDENT), Student
+        // PASO 2: AuthService crea Person + PersonRole.
+        //         NO crea la fila en students (ver AuthService.createPerson).
         Person person = authService.createPerson(dto);
 
-        // PASO 3: Recuperamos el Student creado por AuthService
-        Student.update("birthplace = ?, town_of_residence = ?, contact_relative = ?, contact_cellphone = ?",
-                    "person_id = ?", dto.birthplace, dto.town_of_residence, dto.contact_relative,
-                    dto.contact_cellphone, person.getLongId());
+        // PASO 3: Creamos el Student completo en un solo saveIt().
+        Student student = new Student();
+        student.setPersonId(person.getLongId());
+        student.setBirthplace(dto.birthplace);
+        student.setTownOfResidence(dto.town_of_residence);
+        student.setContactRelative(dto.contact_relative);
+        student.setContactCellphone(dto.contact_cellphone);
+        student.saveIt();
 
-        return Student.findFirst("person_id = ?", person.getLongId());
+        return student;
     }
 
     // -----------------------------------------------------------
-    // Validaciones de formato y presencia
+    // Validaciones de formato y presencia.
     // Lanza ServiceException(400) si algo está mal.
     // -----------------------------------------------------------
     private void validateFields(StudentCreateDTO dto) {
-        if (isBlank(dto.name) || isBlank(dto.surname) || isBlank(dto.email) || isBlank(dto.dni)
-            || isBlank(dto.username) || isBlank(dto.password)) {
+
+        if (isBlank(dto.name) || isBlank(dto.surname) || isBlank(dto.email)
+                || isBlank(dto.dni) || isBlank(dto.username) || isBlank(dto.password)) {
             throw new ServiceException(
                 "Todos los campos obligatorios son requeridos.", 400);
         }
