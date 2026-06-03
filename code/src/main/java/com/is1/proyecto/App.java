@@ -3,7 +3,14 @@ package com.is1.proyecto;
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.routes.*;
 import com.is1.proyecto.controllers.AdminController;
+import com.is1.proyecto.controllers.ProfessorController;
+import com.is1.proyecto.controllers.ProfileController;
+import com.is1.proyecto.controllers.SettingsController;
+import com.is1.proyecto.controllers.StudentController;
 import com.is1.proyecto.services.AuthService;
+import com.is1.proyecto.services.ProfessorService;
+import com.is1.proyecto.services.SettingsService;
+import com.is1.proyecto.services.StudentService;
 
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -35,14 +42,15 @@ public class App {
         // 5. Registro de rutas
 
         // Dependencias compartidas
-        AuthService authService = new AuthService();
         MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
-        AdminController adminController = new AdminController(authService, templateEngine);
 
-        new AuthRoutes(adminController).register();
-        new AdminRoutes(adminController).register();
+        new AuthRoutes().register();
+        new DashboardRoutes().register();
+        new AdminRoutes().register();
         new ProfessorRoutes().register();
         new StudentRoutes().register();
+        new ProfileRoutes().register();
+        new SettingsRoutes().register();
         new SubjectRoutes().register();
         new CareerRoutes().register();
         new StudyPlanRoutes().register();

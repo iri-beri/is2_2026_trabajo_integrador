@@ -89,9 +89,6 @@ public class StudentController extends BaseController {
         dto.contact_relative = req.queryParams("contact_relative");
         dto.contact_cellphone = req.queryParams("contact_cellphone");
         dto.role = Role.STUDENT;
-
-        // Temporal
-        System.out.println("ROLE EN STUDENT CONTROLLER = " + dto.role);
         
         return dto;
     }

@@ -1,25 +1,33 @@
 package com.is1.proyecto.routes;
 
-import com.is1.proyecto.controllers.AdminController;
+import com.is1.proyecto.controllers.AuthController;
+import com.is1.proyecto.services.AuthService;
+
+import spark.template.mustache.MustacheTemplateEngine;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 public class AuthRoutes {
 
-    private final AdminController controller;
+    private final AuthController controller;
 
-    public AuthRoutes(AdminController controller) {
-        this.controller = controller;
+    public AuthRoutes() {
+
+        AuthService service = new AuthService();
+        MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
+
+        controller = new AuthController( service, templateEngine);
     }
 
-    // -----------------------------------------------------------
-    // Rutas de autenticación
-    // -----------------------------------------------------------
     public void register() {
-        get("/",       controller::showLoginForm);
-        get("/login",  controller::showLoginForm);
+
+        get("/", controller::showLoginForm);
+
+        get("/login", controller::showLoginForm);
+
         post("/login", controller::login);
-        post("/logout", controller::logout);
+
+        get("/logout", controller::logout);
     }
 }
