@@ -1,6 +1,8 @@
 package com.is1.proyecto.controllers;
 
 import com.is1.proyecto.models.Person;
+import com.is1.proyecto.models.Professor;
+import com.is1.proyecto.models.Student;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -46,7 +48,7 @@ public abstract class BaseController {
     protected void loginUser(Request req, Person person) {
 
         req.session(true).attribute("currentUserUsername", person.getUsername());
-        req.session().attribute("userId", person.getId());
+        req.session().attribute("userId", person.getLongId());
         req.session().attribute("loggedIn", true);
     }
 
@@ -69,6 +71,38 @@ public abstract class BaseController {
     // ----------------------------------------------------------------
     protected void redirectToSuccess(Response res, String name, String message, boolean loggedIn) {
 
-        res.redirect("/user/created" + "?name=" + encode(name) + "&message=" + encode(message) + "&loggedIn=" + loggedIn);
+        res.redirect("/dashboard?message=" + encode(message));
+    }
+
+    protected void loadPersonData(Person person, Map<String, Object> model) {
+        // Datos de Person
+        model.put("name", person.getName());
+        model.put("surname", person.getSurname());
+        model.put("dni", person.getDni());
+        model.put("username", person.getUsername());
+        model.put("email", person.getEmail());
+        model.put("cellphone", person.getCellphone());
+        model.put("birthdate", person.getBirthdate());
+        // Roles
+        model.put("isAdmin", person.isAdmin());
+        model.put("isProfessor", person.isProfessor());
+        model.put("isStudent", person.isStudent());
+        // Datos de Professor
+        if (person.isProfessor()) {
+            Professor professor = person.getProfessor();
+            model.put("professor", true);
+            model.put("degree", professor.getDegree());
+            model.put("graduate_univ", professor.getGraduateUniv());
+            model.put("position", professor.getPosition());
+        }
+        // Datos de Student
+        if (person.isStudent()) {
+            Student student = person.getStudent();
+            model.put("student", true);
+            model.put("birthplace", student.getBirthplace());
+            model.put("town_of_residence", student.getTownOfResidence());
+            model.put("contact_relative", student.getContactRelative());
+            model.put("contact_cellphone", student.getContactCellphone());
+        }
     }
 }
