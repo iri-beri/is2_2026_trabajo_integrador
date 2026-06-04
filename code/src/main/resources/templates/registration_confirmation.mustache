@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscripción Confirmada</title>
+</head>
+<body>
+
+    <h1>Inscripción realizada exitosamente</h1>
+    <p>Fecha de inscripción: <strong>{{date}}</strong></p>
+
+    <h2>Alumno</h2>
+    <ul>
+        <li>ID: {{studentId}}</li>
+        <li>Nombre: {{studentName}} {{studentSurname}}</li>
+        <li>DNI: {{studentDni}}</li>
+        <li>Email: {{studentEmail}}</li>
+    </ul>
+
+    <h2>Materia</h2>
+    <ul>
+        <li>ID: {{subjectId}}</li>
+        <li>Código: {{subjectCode}}</li>
+        <li>Nombre: {{subjectName}}</li>
+        <li>Horas: {{subjectHours}}</li>
+    </ul>
+
+    <a href="/registration/create">Nueva inscripción</a>
+    <a href="/dashboard/admin">Volver al dashboard</a>
+
+</body>
+</html>
