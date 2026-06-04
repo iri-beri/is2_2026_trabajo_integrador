@@ -1,46 +1,118 @@
--- Elimina la tabla 'users' si ya existe para asegurar un inicio limpio
-DROP TABLE IF EXISTS users;
+-- =============================================================
+-- PERSONS — base table (superclass)
+-- Contains all common attributes including authentication fields
+-- =============================================================
+CREATE TABLE IF NOT EXISTS persons (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    dni         TEXT    NOT NULL UNIQUE,  -- TEXT: avoids leading zero issues
+    name        TEXT       NOT NULL,
+    surname     TEXT       NOT NULL,
+    username    TEXT       NOT NULL UNIQUE,
+    password    TEXT       NOT NULL,
+    cellphone   TEXT,
+    birthdate   DATE,
+    email       TEXT       NOT NULL UNIQUE,
 
--- Crea la tabla 'users' con los campos originales, adaptados para SQLite
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, -- Clave primaria autoincremental para SQLite
-    name TEXT NOT NULL UNIQUE,          -- Nombre de usuario (TEXT es el tipo de cadena recomendado para SQLite), con restricción UNIQUE
-    password TEXT NOT NULL           -- Contraseña hasheada (TEXT es el tipo de cadena recomendado para SQLite)
+    created_at  DATETIME,
+    updated_at  DATETIME
 );
 
--- Elimina la tabla 'persons' si ya existe para asegurar un inicio limpio
-DROP TABLE IF EXISTS persons;
+-- =============================================================
+-- PERSON_ROLES — many roles per person
+-- A person can be PROFESSOR and STUDENT simultaneously
+-- =============================================================
+CREATE TABLE IF NOT EXISTS person_roles (
+    person_id   INTEGER NOT NULL,
+    role        TEXT    NOT NULL CHECK(role IN ('ADMIN', 'PROFESSOR', 'STUDENT')),
 
--- Crea la tabla 'persons' con los campos originales, adaptados para SQLite
-CREATE TABLE persons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, -- Clave primaria autoincremental para SQLite
-    -- Campos de persona (obligatorios en el formulario)
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    dni VARCHAR(20) NOT NULL UNIQUE,
-    mail VARCHAR(100) NOT NULL UNIQUE,
-
-    -- Campos requeridos por ActiveJDBC para seguimiento
-    created_at DATETIME,
-    updated_at DATETIME
+    PRIMARY KEY (person_id, role),
+    FOREIGN KEY (person_id) REFERENCES persons(id)
+    ON DELETE CASCADE
 );
 
--- Elimina la tabla 'professors' si ya existe para asegurar un inicio limpio
-DROP TABLE IF EXISTS professors;
+-- =============================================================
+-- PROFESSORS — subclass of Person
+-- Only stores attributes specific to Professor
+-- =============================================================
+CREATE TABLE IF NOT EXISTS professors (
+    person_id       INTEGER PRIMARY KEY,
+    degree          TEXT,
+    graduate_univ   TEXT,
+    position        TEXT,
 
--- Crea la tabla 'professors' con los campos originales, adaptados para SQLite
-CREATE TABLE professors (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at      DATETIME,
+    updated_at      DATETIME,
 
-    person_id INTEGER NOT NULL UNIQUE,
-    legajo VARCHAR(100) UNIQUE,
-    titulo VARCHAR(100),
-    univ_grad VARCHAR(200),
-    cargo VARCHAR(200),
+    FOREIGN KEY (person_id) REFERENCES persons(id)
+    ON DELETE CASCADE
+);
 
-    -- Campos requeridos por ActiveJDBC para seguimiento
-    created_at DATETIME,
-    updated_at DATETIME,
+-- =============================================================
+-- STUDENTS — subclass of Person
+-- Only stores attributes specific to Student
+-- =============================================================
+CREATE TABLE IF NOT EXISTS students (
+    person_id           INTEGER PRIMARY KEY,
+    birthplace          TEXT,
+    town_of_residence   TEXT,
+    contact_relative    TEXT,
+    contact_cellphone   TEXT,
 
-    FOREIGN KEY (person_id) REFERENCES persons (id) -- Clave foránea que hace referencia a persona, de la cual hereda profesor
+    created_at          DATETIME,
+    updated_at          DATETIME,
+
+    FOREIGN KEY (person_id) REFERENCES persons(id)
+    ON DELETE CASCADE
+);
+
+-- =============================================================
+-- ADMINISTRATORS — subclass of Person
+-- No extra attributes, only the FK to persons
+-- =============================================================
+CREATE TABLE IF NOT EXISTS administrators (
+    person_id   INTEGER PRIMARY KEY,
+
+    created_at  DATETIME,
+    updated_at  DATETIME,
+
+    FOREIGN KEY (person_id) REFERENCES persons(id)
+    ON DELETE CASCADE
+);
+
+-- =============================================================
+-- SUBJECTS
+-- =============================================================
+CREATE TABLE IF NOT EXISTS subjects (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    code            INTEGER NOT NULL UNIQUE,
+    name            TEXT    NOT NULL,
+    course_syllabus TEXT,
+    hours           INTEGER NOT NULL,
+
+    created_at      DATETIME,
+    updated_at      DATETIME
+);
+
+-- =============================================================
+-- CAREERS
+-- =============================================================
+CREATE TABLE IF NOT EXISTS careers (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    code        INTEGER NOT NULL UNIQUE,
+    name        TEXT    NOT NULL,
+ 
+    created_at  DATETIME,
+    updated_at  DATETIME
+);
+
+-- =============================================================
+-- PLANS
+-- =============================================================
+CREATE TABLE IF NOT EXISTS plans (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    NOT NULL,
+    version     TEXT    NOT NULL,
+
+    created_at  DATETIME,
+    updated_at  DATETIME
 );

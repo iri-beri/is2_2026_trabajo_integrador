@@ -1,11 +1,14 @@
 ``` mermaid
 classDiagram
     class Person {
-        +String id
+        +String dni
         +String name
         +String surname
+        +String username
+        +String password
         +String cellphone
         +Date birthdate
+        +String email
     }
     class Professor {
         +String degree
@@ -19,8 +22,7 @@ classDiagram
         +String contact_cellphone
     }
     class Administrator {
-        +String username
-        +String email
+        
     }
     class Period {
         +Date start_date

@@ -2,12 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro de Profesor</title>
+    <title>Registro de Estudiante</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Registrar Nuevo Profesor</h1>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Registrar Nuevo Estudiante
+        </h1>
 
         {{#successMessage}}
         <!-- Estilo de mensaje de éxito idéntico al user_form -->
@@ -23,7 +24,7 @@
         </div>
         {{/errorMessage}}
 
-        <form action="/professor/new" method="post" class="space-y-4">
+        <form action="/student/new" method="post" class="space-y-4">
             <!-- SECCIÓN OBLIGATORIA: DATOS DE PERSONA -->
             <h2 class="text-xl font-semibold text-gray-700 mb-2">Información Obligatoria
                 <span class="text-red-500 text-sm">(*)</span>
@@ -113,7 +114,7 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- SECCIÓN OPCIONAL: DATOS DE PROFESOR -->
+            <!-- SECCIÓN OPCIONAL: DATOS DE ESTUDIANTE -->
             <h2 class="text-xl font-semibold text-gray-700 mb-2 pt-4 border-t border-gray-200">Información Opcional
             </h2>
 
@@ -132,42 +133,41 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- Título -->
+            <!-- Lugar de nacimiento -->
             <div>
-                <label for="degree"
-                        class="block text-gray-700 text-sm font-medium mb-1">
-                        Título:
+                <label for="birthplace"
+                        class="block text-gray-700 text-sm font-medium mb-1">Lugar de nacimiento:
                 </label>
                 
-                <input type="text" id="degree" name="degree"
+                <input type="text" id="birthplace" name="birthplace"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- Universidad -->
+            <!-- Lugar de residencia -->
             <div>
-                <label for="university"
-                        class="block text-gray-700 text-sm font-medium mb-1">Universidad de Graduación:
+                <label for="town_of_residence"
+                        class="block text-gray-700 text-sm font-medium mb-1">Lugar de residencia:
                 </label>
 
-                <input type="text" id="university" name="university"
+                <input type="text" id="town_of_residence" name="town_of_residence"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- Cargo -->
+            <!-- Contacto familiar -->
             <div>
-                <label for="position"
-                            class="block text-gray-700 text-sm font-medium mb-1">Cargo:
+                <label for="contact_relative"
+                            class="block text-gray-700 text-sm font-medium mb-1">Contacto familiar:
                 </label>
 
-                <input type="text" id="position" name="position"
+                <input type="text" id="contact_relative" name="contact_relative"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
-            <!-- Celular -->
+            <!-- Celular del contacto -->
             <div>
                 <label for="cellphone"
                         class="block text-gray-700 text-sm font-medium mb-1">
-                    Celular
+                    Celular del contacto
                 </label>
 
                 <input type="text"
@@ -180,7 +180,7 @@
 
             <button type="submit"
                     class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-6">
-                Registrar Profesor
+                Registrar Estudiante
             </button>
 
             <div class="text-center mt-4">

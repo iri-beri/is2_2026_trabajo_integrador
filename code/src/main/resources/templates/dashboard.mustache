@@ -2,19 +2,25 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Bienvenido</title>
-    <!-- Carga de Tailwind CSS para el estilo -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>/* Definición de la fuente Inter como recomendada */ :root { font-family: 'Inter', sans-serif; }</style>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4"
-    style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%)";>
-    <!-- Contenedor principal del dashboard -->
-    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200">
-        <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-6">Panel de Control</h1>
+    style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
 
-        <!-- Mensaje de bienvenida condicional -->
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200">
+
+        <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-6">Panel de Control
+        </h1>
+
+        {{#successMessage}}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            {{successMessage}}
+        </div>
+        {{/successMessage}}
+
         {{#username}}
         <p class="text-xl text-center text-gray-700 mb-8">
             ¡Bienvenido, <span class="font-bold text-blue-600">{{username}}</span>!
@@ -24,40 +30,92 @@
         <p class="text-xl text-center text-gray-700 mb-8">¡Bienvenido!</p>
         {{/username}}
 
-        <!-- Sección de Acciones Rápidas (Perfil y Configuraciones) -->
+        <!-- Acciones rápidas -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <!-- Tarjeta de Perfil -->
             <div class="bg-blue-50 border border-blue-300 p-6 rounded-lg text-center shadow-md hover:shadow-lg transition duration-300">
                 <h2 class="text-2xl font-semibold text-blue-800 mb-3">Tu Perfil</h2>
-                <p class="text-gray-600 mb-4">Gestiona la informacion de tu cuenta personal.</p>
-                <a href="/profile" class="inline-block bg-blue-600 text-white py-2 px-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 shadow-lg">
+                <p class="text-gray-600 mb-4">Gestiona la información de tu cuenta personal.</p>
+                <a href="/profile"
+                    class="inline-block bg-blue-600 text-white py-2 px-4 rounded-full font-medium hover:bg-blue-700 transition duration-300 shadow-lg">
                     Ver Perfil
                 </a>
             </div>
-            <!-- Tarjeta de Configuraciones -->
             <div class="bg-green-50 border border-green-300 p-6 rounded-lg text-center shadow-md hover:shadow-lg transition duration-300">
                 <h2 class="text-2xl font-semibold text-green-800 mb-3">Configuraciones</h2>
                 <p class="text-gray-600 mb-4">Ajusta las preferencias de la aplicación.</p>
-                <a href="/settings" class="inline-block bg-green-600 text-white py-2 px-4 rounded-full font-medium hover:bg-green-700 transition duration-300 shadow-lg">
+                <a href="/settings"
+                    class="inline-block bg-green-600 text-white py-2 px-4 rounded-full font-medium hover:bg-green-700 transition duration-300 shadow-lg">
                     Configuración
                 </a>
             </div>
         </div>
 
-        <!-- Separador -->
         <hr class="my-8 border-gray-300">
 
-        <!-- Sección de Gestión de Personal (Nueva Sección) -->
-        <div class="bg-indigo-50 border border-indigo-300 p-6 rounded-lg text-center shadow-md mb-8">
-            <h2 class="text-2xl font-semibold text-indigo-800 mb-4">Gestión de Personal</h2>
-            <p class="text-gray-600 mb-6">
-                Acciones administrativas relacionadas con la plantilla de personal.
-            </p>
-            <!-- Botón de Registrar Nuevo Profesor -->
-            <a href="/professor/create" class="inline-block bg-indigo-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
-                + Registrar Nuevo Profesor
-            </a>
+        {{#isAdmin}}
+        <!-- Gestión de Personal -->
+        <div class="bg-purple-50 border border-purple-300 p-6 rounded-lg text-center shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-purple-800 mb-4">Gestión de Personal</h2>
+            <p class="text-gray-600 mb-6">Acciones administrativas relacionadas con la plantilla de personal.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="/professor/create"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    + Registrar Nuevo Profesor
+                </a>
+                <a href="/admin/professors"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    Ver Profesores
+                </a>
+            </div>
         </div>
+
+        <!-- Gestión de Estudiantes -->
+        <div class="bg-purple-50 border border-purple-300 p-6 rounded-lg text-center shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-purple-800 mb-4">Gestión de Estudiantes</h2>
+            <p class="text-gray-600 mb-6">Acciones administrativas relacionadas con la plantilla de estudiantes.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="/student/create"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    + Registrar Nuevo Estudiante
+                </a>
+                <a href="/admin/students"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    Ver Estudiantes
+                </a>
+            </div>
+        </div>
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Gestión Académica: Materias, Carreras y Planes de Estudio -->
+        <div class="bg-amber-50 border border-amber-300 p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold text-amber-800 mb-4 text-center">Gestión Académica</h2>
+            <p class="text-gray-600 mb-6 text-center">Administrá el catálogo de materias, carreras y planes de estudio.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="/subject/create"
+                   class="inline-block text-center bg-amber-600 text-white py-3 px-4 rounded-full font-bold shadow-xl hover:bg-amber-700 transition duration-300 transform hover:scale-105">
+                    + Nueva Materia
+                </a>
+                <a href="/career/create"
+                   class="inline-block text-center bg-amber-600 text-white py-3 px-4 rounded-full font-bold shadow-xl hover:bg-amber-700 transition duration-300 transform hover:scale-105">
+                    + Nueva Carrera
+                </a>
+                <a href="/studyplan/create"
+                   class="inline-block text-center bg-amber-600 text-white py-3 px-4 rounded-full font-bold shadow-xl hover:bg-amber-700 transition duration-300 transform hover:scale-105">
+                    + Nuevo Plan de Estudio
+                </a>
+            </div>
+        </div>
+
+        {{/isAdmin}}
+
+        {{#isProfessor}}
+
+        {{/isProfessor}}
+
+        {{#isStudent}}
+        
+        {{/isStudent}}
 
         <!-- Botón de Cerrar Sesión (al final) -->
         <div class="text-center mt-8">

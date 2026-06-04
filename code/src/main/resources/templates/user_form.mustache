@@ -2,50 +2,161 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear una cuenta</title>
+    <title>Crear administrador</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4" 
-      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Crear una cuenta</h1>
+
+<body class="flex items-center justify-center min-h-screen p-4"
+        style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+            Registrar Administrador
+        </h1>
 
         {{#successMessage}}
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{successMessage}}</span>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{successMessage}}
         </div>
         {{/successMessage}}
 
         {{#errorMessage}}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <span class="block sm:inline">{{errorMessage}}</span>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{errorMessage}}
         </div>
         {{/errorMessage}}
 
-        <form action="/user/new" method="post" class="space-y-4"
-        background: rgba(255, 255, 255, 0.12);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 14px;
-        ">
+        <form action="/admin/new" method="post" class="space-y-4">
+
+            <!-- DNI -->
             <div>
-                <label for="name" class="block text-gray-700 text-sm font-medium mb-1">Nombre de Usuario:</label>
-                <input type="text" id="name" name="name" required
+                <label for="dni"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    DNI
+                </label>
+
+                <input type="text"
+                        id="dni"
+                        name="dni"
+                        required
+                        pattern="^[0-9]{7,8}$"
+                        title="El DNI debe tener 7 u 8 dígitos"
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
+
+            <!-- Nombre -->
             <div>
-                <label for="password" class="block text-gray-700 text-sm font-medium mb-1">Contraseña:</label>
-                <input type="password" id="password" name="password" required
+                <label for="name"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Nombre
+                </label>
+
+                <input type="text"
+                        id="name"
+                        name="name"
+                        required
                         class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
+
+            <!-- Apellido -->
+            <div>
+                <label for="surname"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Apellido
+                </label>
+
+                <input type="text"
+                        id="surname"
+                        name="surname"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Username -->
+            <div>
+                <label for="username"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Nombre de usuario
+                </label>
+
+                <input type="text"
+                        id="username"
+                        name="username"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Email
+                </label>
+
+                <input type="email"
+                        id="email"
+                        name="email"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Celular -->
+            <div>
+                <label for="cellphone"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Celular
+                </label>
+
+                <input type="text"
+                        id="cellphone"
+                        name="cellphone"
+                        pattern="^[0-9]{8,16}$"
+                        title="Ingrese sólo números (8 a 16 dígitos)"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Fecha nacimiento -->
+            <div>
+                <label for="birthdate"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Fecha de nacimiento
+                </label>
+
+                <input type="date"
+                        id="birthdate"
+                        name="birthdate"
+                        min="1900-01-01"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="password"
+                        class="block text-gray-700 text-sm font-medium mb-1">
+                    Contraseña
+                </label>
+
+                <input type="password"
+                        id="password"
+                        name="password"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
             <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                Registrar Usuario
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+                Registrar Administrador
             </button>
+
             <div class="text-center mt-4">
-                <a href="/" class="text-blue-600 hover:underline text-sm">Volver al inicio</a>
+                <a href="/"
+                    class="text-blue-600 hover:underline text-sm">
+                    Volver al inicio
+                </a>
             </div>
+
         </form>
     </div>
 </body>

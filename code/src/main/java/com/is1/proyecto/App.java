@@ -1,8 +1,9 @@
 package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
-import com.is1.proyecto.routes.ProfessorRoutes;
-import com.is1.proyecto.routes.UserRoutes;
+import com.is1.proyecto.routes.*;
+import com.is1.proyecto.services.*;
+import spark.template.mustache.MustacheTemplateEngine;
 
 import org.javalite.activejdbc.Base;
 
@@ -30,8 +31,19 @@ public class App {
         configureFilters(dbConfig);
 
         // 5. Registro de rutas
-        new UserRoutes().register();
+
+        // Dependencias compartidas
+        AuthService authService = new AuthService();
+        MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
+
+        new AuthRoutes().register();
+        new DashboardRoutes().register();
+        new AdminRoutes().register();
         new ProfessorRoutes().register();
+        new StudentRoutes().register();
+        new SubjectRoutes().register();
+        new CareerRoutes().register();
+        new StudyPlanRoutes().register();
     }
 
     // -----------------------------------------------------------
@@ -74,8 +86,7 @@ public class App {
         try {
             dbConfig.openConnection();
 
-            InputStream is = App.class.getClassLoader()
-                                      .getResourceAsStream("scheme.sql");
+            InputStream is = App.class.getClassLoader().getResourceAsStream("scheme.sql");
 
             if (is == null) {
                 throw new IOException("scheme.sql no encontrado en el classpath.");

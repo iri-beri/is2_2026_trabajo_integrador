@@ -1,1 +1,35 @@
+# Maven
 target/
+
+# Base de datos local SQLite
+db/*.db
+
+# Archivos temporales de logs
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+# Maven
+target/
+
+# Base de datos local SQLite
+db/*.db
+
+# Archivos temporales de logs
+*.log
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+#Users test
+testUsers.md

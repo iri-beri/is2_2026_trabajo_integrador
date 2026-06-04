@@ -1,54 +1,55 @@
 package com.is1.proyecto.services;
 
 import com.is1.proyecto.models.Person;
-import com.is1.proyecto.models.Professor;
-import com.is1.proyecto.services.dto.ProfessorCreateDTO;
+import com.is1.proyecto.models.Student;
+import com.is1.proyecto.services.dto.StudentCreateDTO;
 
-public class ProfessorService {
+public class StudentService {
 
     private static final String EMAIL_REGEX =
         "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*" +
         "@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
     private final AuthService authService;
 
-    public ProfessorService() {
+    public StudentService() {
         this.authService = new AuthService();
     }
 
     // -----------------------------------------------------------
-    // Método público principal: recibe un DTO, devuelve el Professor creado.
+    // Método público principal: recibe un DTO, devuelve el Student creado.
     // El Controller solo llama a esto.
     //
     // Responsabilidades:
-    //   AuthService  → Person + PersonRole(PROFESSOR)
-    //   ProfessorService → fila professors con todos sus campos
+    //   AuthService     → Person + PersonRole(STUDENT)
+    //   StudentService  → fila students con todos sus campos
     // -----------------------------------------------------------
-    public Professor createProfessor(ProfessorCreateDTO dto) {
+    public Student createStudent(StudentCreateDTO dto) {
 
         // PASO 1: Validar campos obligatorios y formatos
         validateFields(dto);
 
         // PASO 2: AuthService crea Person + PersonRole.
-        //         NO crea la fila en professors (ver AuthService.createPerson).
+        //         NO crea la fila en students (ver AuthService.createPerson).
         Person person = authService.createPerson(dto);
 
-        // PASO 3: Creamos el Professor completo en un solo saveIt().
-        //         Así evitamos el UPDATE posterior que era la fuente del error.
-        Professor professor = new Professor();
-        professor.setPersonId(person.getLongId());
-        professor.setDegree(dto.degree);
-        professor.setGraduateUniv(dto.university);
-        professor.setPosition(dto.position);
-        professor.saveIt();
+        // PASO 3: Creamos el Student completo en un solo saveIt().
+        Student student = new Student();
+        student.setPersonId(person.getLongId());
+        student.setBirthplace(dto.birthplace);
+        student.setTownOfResidence(dto.town_of_residence);
+        student.setContactRelative(dto.contact_relative);
+        student.setContactCellphone(dto.contact_cellphone);
+        student.saveIt();
 
-        return professor;
+        return student;
     }
 
     // -----------------------------------------------------------
     // Validaciones de formato y presencia.
     // Lanza ServiceException(400) si algo está mal.
     // -----------------------------------------------------------
-    private void validateFields(ProfessorCreateDTO dto) {
+    private void validateFields(StudentCreateDTO dto) {
 
         if (isBlank(dto.name) || isBlank(dto.surname) || isBlank(dto.email)
                 || isBlank(dto.dni) || isBlank(dto.username) || isBlank(dto.password)) {

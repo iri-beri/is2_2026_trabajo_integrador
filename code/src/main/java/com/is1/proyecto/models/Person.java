@@ -3,53 +3,115 @@ package com.is1.proyecto.models;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
 
-@Table("persons") // Esta anotación asocia explícitamente el modelo 'Person' con la tabla 'persons' en la DB.
 
+
+@Table("persons")
 public class Person extends Model {
-    
-    // ActiveJDBC mapea automáticamente las columnas de la tabla 'persons' a los atributos de esta clase.
-    // No es necesario declarar los campos (dni, nombre, apellido, correo) aquí como variables de instancia,
-    // ya que la clase Model base se encarga de la interacción con la base de datos y los gestiona.
-    // Se añaden getters/setters tipados por conveniencia.
 
-    public Integer getId() {
-        return getInteger("id");
-    }
-    
-    public Integer getDni() {
-        return getInteger("dni");
+    // -------------------------------------------
+    // Basic Information
+    // -------------------------------------------
+
+    public String getDni() {
+        return getString("dni");
     }
 
-    public void setDni(Integer dni) {
+    public void setDni(String dni) {
         set("dni", dni);
     }
 
-    public String getNombre() {
-        return getString("nombre");
+    public String getName() {
+        return getString("name");
     }
 
-    public void setNombre(String nombre) {
-        set("nombre", nombre);
+    public void setName(String name) {
+        set("name", name);
     }
 
-    public String getApellido() {
-        return getString("apellido");
+    public String getSurname() {
+        return getString("surname");
     }
 
-    public void setApellido(String apellido) {
-        set("apellido", apellido);
+    public void setSurname(String surname) {
+        set("surname", surname);
     }
 
-    public String getMail() {
-        return getString("mail");
+    public String getCellphone() {
+        return getString("cellphone");
     }
 
-    public void setMail(String mail) {
-        set("mail", mail);
+    public void setCellphone(String cellphone) {
+        set("cellphone", cellphone);
     }
 
-    // Relación uno a uno con Professor (la clave foránea está en professors)
-    //public Professor getProfessor() {
-    //    return this.one(Professor.class);
-    //}
+    public String getBirthdate() {
+        return getString("birthdate");
+    }
+
+    public void setBirthdate(String birthdate) {
+        set("birthdate", birthdate);
+    }
+
+    public String getEmail() {
+        return getString("email");
+    }
+
+    public void setEmail(String email) {
+        set("email", email);
+    }
+
+    // -------------------------------------------
+    // Authentication
+    // -------------------------------------------
+
+    public String getUsername() {
+        return getString("username");
+    }
+
+    public void setUsername(String username) {
+        set("username", username);
+    }
+
+    public String getPassword() {
+        return getString("password");
+    }
+
+    public void setPassword(String password) {
+        set("password", password);
+    }
+
+    // -------------------------------------------
+    // Relationships
+    // -------------------------------------------
+
+    public Professor getProfessor() {
+        return Professor.findFirst("person_id = ?", getId());
+    }
+
+    public Student getStudent() {
+        return Student.findFirst("person_id = ?", getId());
+    }
+
+    public Administrator getAdministrator() {
+        return Administrator.findFirst("person_id = ?", getId());
+    }
+
+    // -------------------------------------------
+    // Roles
+    // -------------------------------------------
+    public boolean hasRole(Role role) {
+        return PersonRole.findFirst("person_id = ? AND role = ?", getId(), role.name()) != null;
+    }
+
+    public boolean isAdmin() {
+        return hasRole(Role.ADMIN);
+    }
+
+    public boolean isProfessor() {
+        return hasRole(Role.PROFESSOR);
+    }
+
+    public boolean isStudent() {
+        return hasRole(Role.STUDENT);
+    }
 }
