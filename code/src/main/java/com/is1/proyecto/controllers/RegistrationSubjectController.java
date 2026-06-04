@@ -30,7 +30,6 @@ public class RegistrationSubjectController extends BaseController {
 
     // -----------------------------------------------------------
     // GET /registration/create
-    // Muestra el formulario: dos campos un text para el dni y uno numerico para subject_id.
     // -----------------------------------------------------------
     public String showForm(Request req, Response res) {
 
@@ -42,7 +41,6 @@ public class RegistrationSubjectController extends BaseController {
 
     // -----------------------------------------------------------
     // POST /registration/new
-    // Procesa la inscripción y redirige a la vista de confirmación.
     // -----------------------------------------------------------
     public String create(Request req, Response res) {
 
@@ -59,7 +57,7 @@ public class RegistrationSubjectController extends BaseController {
             res.redirect("/registration/create?error=" + encode(e.getMessage()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             res.status(500);
             res.redirect("/registration/create?error=" + encode("Error interno. Intente de nuevo."));
         }
@@ -69,46 +67,43 @@ public class RegistrationSubjectController extends BaseController {
 
     // -----------------------------------------------------------
     // GET /registration/confirmation/:id
-    // Muestra los datos completos del Student, Subject y la fecha.
+    //
+    // parent() de ActiveJDBC solo funciona con eager loading (include()).
+    // Con findById() el cache de padres está vacío y devuelve null.
+    // Navegamos con búsquedas explícitas por FK para evitar el NPE.
     // -----------------------------------------------------------
     public String showConfirmation(Request req, Response res) {
-        System.out.println(
-    "Buscando inscripción con ID: "
-    + req.params(":id")
-);
-        String idParam = req.params(":id");
-
+        System.out.println("student_dni: " + req.queryParams("student_dni"));
+        System.out.println("subject_id: "  + req.queryParams("subject_id"));
         try {
 
-            Long registrationId = Long.parseLong(idParam);
-            System.out.println("ID recibido: " + registrationId);
+            Long registrationId = Long.parseLong(req.params(":id"));
+            RegistrationSubject registration = RegistrationSubject.findById(registrationId);
 
-RegistrationSubject registration =
-    RegistrationSubject.findById(registrationId);
-
-System.out.println("Registration encontrada: " + registration);
             if (registration == null) {
                 res.redirect("/registration/create?error=" + encode("Inscripción no encontrada."));
                 return "";
             }
 
-            Student student = registration.getStudent();
-            Subject subject = registration.getSubject();
-            Person  person  = student.getPerson();
+            // Navegación explícita por FK — no usamos parent()
+            Student student = Student.findFirst("person_id = ?", registration.getStudentId());
+            Subject subject = Subject.findById(registration.getSubjectId());
+            Person  person  = Person.findById(student.getPersonId());
+
+            if (student == null || subject == null || person == null) {
+                res.redirect("/registration/create?error=" + encode("Datos de inscripción incompletos."));
+                return "";
+            }
 
             Map<String, Object> model = new HashMap<>();
 
-            // Datos de la inscripción
             model.put("date",           registration.getDate());
 
-            // Datos del alumno
-            model.put("studentId",      student.getPersonId());
+            model.put("studentDni",     person.getDni());
             model.put("studentName",    person.getName());
             model.put("studentSurname", person.getSurname());
-            model.put("studentDni",     person.getDni());
             model.put("studentEmail",   person.getEmail());
 
-            // Datos de la materia
             model.put("subjectId",      subject.getLongId());
             model.put("subjectCode",    subject.getCode());
             model.put("subjectName",    subject.getName());
@@ -127,19 +122,18 @@ System.out.println("Registration encontrada: " + registration);
     // -----------------------------------------------------------
     // DTO Builder
     // -----------------------------------------------------------
-   private RegistrationSubjectCreateDTO buildDTO(Request req) {
+    private RegistrationSubjectCreateDTO buildDTO(Request req) {
 
         RegistrationSubjectCreateDTO dto = new RegistrationSubjectCreateDTO();
 
-        dto.dni = req.queryParams("dni");
-
         String subjectParam = req.queryParams("subject_id");
 
+        dto.studentDni = req.queryParams("student_dni");
+
         try {
-            dto.subjectId = subjectParam != null? Long.parseLong(subjectParam): null;
+            dto.subjectId = subjectParam != null ? Long.parseLong(subjectParam) : null;
         } catch (NumberFormatException e) {
-            throw new ServiceException(
-                "El ID de la materia debe ser un número entero.", 400);
+            throw new ServiceException("El ID de la materia debe ser un número entero.", 400);
         }
 
         return dto;

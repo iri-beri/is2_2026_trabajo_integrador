@@ -19,7 +19,7 @@ public class RegistrationSubjectService {
 
         validateIds(dto);
 
-        Student student = findStudent(dto.dni);
+        Student student = findStudent(dto.studentDni);
         Subject subject = findSubject(dto.subjectId);
 
         checkNotAlreadyRegistered(student.getPersonId(),subject.getLongId());
@@ -32,15 +32,27 @@ public class RegistrationSubjectService {
 
         registration.saveIt();
 
-        return registration;
+        // ActiveJDBC con SQLite no recupera el generated key correctamente:
+        // el id queda -1 tras el saveIt(). Recuperamos el registro recién
+        // insertado por la clave única (student_id, subject_id).
+        RegistrationSubject saved = RegistrationSubject.findFirst(
+            "student_id = ? AND subject_id = ?",
+            student.getPersonId(), subject.getLongId()
+        );
+ 
+        if (saved == null) {
+            throw new ServiceException("Error al recuperar la inscripción tras guardarla.", 500);
+        }
+ 
+        return saved;
     }
 
     // -----------------------------------------------------------
     // Validaciones
     // -----------------------------------------------------------
     private void validateIds(RegistrationSubjectCreateDTO dto) {
-
-        if (dto.dni == null || dto.subjectId == null) {
+        
+        if (dto.studentDni == null || dto.subjectId == null) {
             throw new ServiceException(
                 "El ID del alumno y el ID de la materia son requeridos.", 400);
         }
