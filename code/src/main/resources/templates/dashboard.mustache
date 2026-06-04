@@ -57,20 +57,32 @@
         <div class="bg-purple-50 border border-purple-300 p-6 rounded-lg text-center shadow-md mb-8">
             <h2 class="text-2xl font-semibold text-purple-800 mb-4">Gestión de Personal</h2>
             <p class="text-gray-600 mb-6">Acciones administrativas relacionadas con la plantilla de personal.</p>
-            <a href="/professor/create"
-                class="inline-block bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
-                + Registrar Nuevo Profesor
-            </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="/professor/create"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    + Registrar Nuevo Profesor
+                </a>
+                <a href="/admin/professors"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    Ver Profesores
+                </a>
+            </div>
         </div>
 
         <!-- Gestión de Estudiantes -->
         <div class="bg-purple-50 border border-purple-300 p-6 rounded-lg text-center shadow-md mb-8">
             <h2 class="text-2xl font-semibold text-purple-800 mb-4">Gestión de Estudiantes</h2>
             <p class="text-gray-600 mb-6">Acciones administrativas relacionadas con la plantilla de estudiantes.</p>
-            <a href="/student/create"
-                class="inline-block bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
-                + Registrar Nuevo Estudiante
-            </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="/student/create"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    + Registrar Nuevo Estudiante
+                </a>
+                <a href="/admin/students"
+                    class="inline-block text-center bg-purple-600 text-white py-3 px-8 rounded-full font-bold shadow-xl hover:bg-purple-700 transition duration-300 transform hover:scale-105">
+                    Ver Estudiantes
+                </a>
+            </div>
         </div>
 
         <hr class="my-8 border-gray-300">

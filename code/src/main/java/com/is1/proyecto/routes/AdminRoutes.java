@@ -24,9 +24,15 @@ public class AdminRoutes {
     // Rutas del administrador
     // -----------------------------------------------------------
     public void register() {
-        get("/dashboard/admin", controller::showDashboard);
-        get("/admin/create",    controller::showCreateAdminForm);
-        get("/user/created",    controller::showUserCreated);
-        post("/admin/new",      controller::createAdmin);
+        get("/dashboard/admin",   controller::showDashboard);
+        get("/admin/create",      controller::showCreateAdminForm);
+        get("/user/created",      controller::showUserCreated);
+        post("/admin/new",        controller::createAdmin);
+
+        // -------------------------------------------------------
+        // Listados de personal
+        // -------------------------------------------------------
+        get("/admin/students",    controller::showStudentList);
+        get("/admin/professors",  controller::showProfessorList);
     }
 }
