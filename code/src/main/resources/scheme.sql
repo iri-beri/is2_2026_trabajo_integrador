@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS career_subjects (
     FOREIGN KEY (career_id)  REFERENCES careers(id)  ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );
+<<<<<<< HEAD
 
 -- =============================================================
 -- PROFESSOR_SUBJECTS — tabla de junction entre profesores y materias
@@ -144,4 +145,24 @@ CREATE TABLE IF NOT EXISTS professor_subjects (
 
     FOREIGN KEY (professor_person_id) REFERENCES professors(person_id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id)          REFERENCES subjects(id)           ON DELETE CASCADE
+=======
+-- =============================================================
+-- REGISTRATION_SUBJECTS — asociación Student ↔ Subject
+-- La fecha se genera automáticamente desde el service.
+-- Un alumno no puede inscribirse dos veces a la misma materia.
+-- =============================================================
+CREATE TABLE IF NOT EXISTS registration_subjects (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id  INTEGER NOT NULL,
+    subject_id  INTEGER NOT NULL,
+    date        DATE    NOT NULL,
+
+    created_at  DATETIME,
+    updated_at  DATETIME,
+
+    FOREIGN KEY (student_id) REFERENCES students(person_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)        ON DELETE CASCADE,
+
+    UNIQUE (student_id, subject_id)
+>>>>>>> b051fb8ce7e0dace2202f038836a7d89f077fbde
 );

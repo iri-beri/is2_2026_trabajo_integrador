@@ -1,7 +1,6 @@
 package com.is1.proyecto.controllers;
 
 import com.is1.proyecto.models.Person;
-import com.is1.proyecto.services.AuthService;
 import com.is1.proyecto.services.ServiceException;
 import com.is1.proyecto.services.SettingsService;
 import com.is1.proyecto.services.dto.ProfileUpdateDTO;

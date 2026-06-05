@@ -2,11 +2,7 @@ package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.routes.*;
-import com.is1.proyecto.services.*;
-import spark.template.mustache.MustacheTemplateEngine;
-
 import org.javalite.activejdbc.Base;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +27,7 @@ public class App {
         configureFilters(dbConfig);
 
         // 5. Registro de rutas
+
         new AuthRoutes().register();
         new DashboardRoutes().register();
         new AdminRoutes().register();
@@ -39,7 +36,11 @@ public class App {
         new SubjectRoutes().register();
         CareerRoutes.register();        // ← ahora sin parámetros, igual que las demás
         new StudyPlanRoutes().register();
+<<<<<<< HEAD
         new ProfessorSubjectRoutes().register();
+=======
+        new RegistrationSubjectRoutes().register();
+>>>>>>> b051fb8ce7e0dace2202f038836a7d89f077fbde
     }
 
     // -----------------------------------------------------------
