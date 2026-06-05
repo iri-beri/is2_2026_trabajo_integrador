@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carreras</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl border border-gray-200">
+
+        <h1 class="text-3xl font-extrabold text-center text-gray-900 mb-2">
+            Carreras
+        </h1>
+        <p class="text-center text-gray-500 text-sm mb-6">Listado de carreras disponibles en el sistema.</p>
+
+        {{#successMessage}}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{successMessage}}
+        </div>
+        {{/successMessage}}
+
+        {{#errorMessage}}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
+        <!-- Botón nueva carrera -->
+        <div class="flex justify-end mb-4">
+            <a href="/career/create"
+               class="inline-block bg-amber-600 text-white py-2 px-5 rounded-full font-bold shadow hover:bg-amber-700 transition duration-300 transform hover:scale-105 text-sm">
+                + Nueva Carrera
+            </a>
+        </div>
+
+        {{#hasCareers}}
+        <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+            <table class="w-full text-sm text-left text-gray-700">
+                <thead class="bg-amber-50 text-amber-800 font-semibold text-xs uppercase tracking-wide">
+                    <tr>
+                        <th class="px-6 py-3 w-20">Código</th>
+                        <th class="px-6 py-3">Nombre</th>
+                        <th class="px-6 py-3 text-center w-40">Materias</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {{#careers}}
+                    <tr class="hover:bg-amber-50 transition duration-150">
+                        <td class="px-6 py-4 font-mono text-gray-500">{{code}}</td>
+                        <td class="px-6 py-4 font-medium text-gray-900">{{name}}</td>
+                        <td class="px-6 py-4 text-center">
+                            <a href="/careers/{{id}}/subjects"
+                               class="inline-block bg-amber-600 text-white py-1 px-4 rounded-full text-xs font-bold hover:bg-amber-700 transition duration-300 shadow">
+                                Ver / Gestionar
+                            </a>
+                        </td>
+                    </tr>
+                    {{/careers}}
+                </tbody>
+            </table>
+        </div>
+        {{/hasCareers}}
+
+        {{^hasCareers}}
+        <div class="text-center py-16 text-gray-400">
+            <p class="text-5xl mb-4">🎓</p>
+            <p class="text-lg font-medium">No hay carreras registradas todavía.</p>
+            <p class="text-sm mt-1">Creá la primera usando el botón de arriba.</p>
+        </div>
+        {{/hasCareers}}
+
+        <div class="text-center mt-8">
+            <a href="/dashboard"
+               class="text-amber-600 hover:underline text-sm font-medium">
+                ← Volver al Dashboard
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>
