@@ -149,3 +149,16 @@ CREATE TABLE IF NOT EXISTS registration_subjects (
 
     UNIQUE (student_id, subject_id)
 );
+-- =============================================================
+-- CAREER_STUDENTS — join table Many2Many Career ↔ Student
+-- Un estudiante puede estar en más de una carrera.
+-- =============================================================
+CREATE TABLE IF NOT EXISTS career_students (
+    career_id   INTEGER NOT NULL,
+    student_id  INTEGER NOT NULL,
+
+    PRIMARY KEY (career_id, student_id),
+
+    FOREIGN KEY (career_id)  REFERENCES careers(id)           ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES students(person_id)   ON DELETE CASCADE
+);
