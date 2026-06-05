@@ -31,24 +31,18 @@ public class App {
         configureFilters(dbConfig);
 
         // 5. Registro de rutas
-
-        // Dependencias compartidas
-        AuthService authService = new AuthService();
-        MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
-
         new AuthRoutes().register();
         new DashboardRoutes().register();
         new AdminRoutes().register();
         new ProfessorRoutes().register();
         new StudentRoutes().register();
         new SubjectRoutes().register();
-        new CareerRoutes().register();
+        CareerRoutes.register();        // ← ahora sin parámetros, igual que las demás
         new StudyPlanRoutes().register();
     }
 
     // -----------------------------------------------------------
     // Abre y cierra la conexión en cada request.
-    // Usa los métodos ya definidos en DBConfigSingleton.
     // -----------------------------------------------------------
     private static void configureFilters(DBConfigSingleton dbConfig) {
 
@@ -57,19 +51,15 @@ public class App {
                 dbConfig.openConnection();
             } catch (Exception e) {
                 System.err.println("Error al abrir conexión: " + e.getMessage());
-
-                halt(500,
-                    "{\"error\": \"Error interno: fallo al conectar a la base de datos.\"}");
+                halt(500, "{\"error\": \"Error interno: fallo al conectar a la base de datos.\"}");
             }
         });
 
         afterAfter((req, res) -> {
             try {
-
                 if (Base.hasConnection()) {
                     dbConfig.closeConnection();
                 }
-
             } catch (Exception e) {
                 System.err.println("Error al cerrar conexión: " + e.getMessage());
             }
@@ -78,7 +68,6 @@ public class App {
 
     // -----------------------------------------------------------
     // Ejecuta el scheme.sql al arrancar.
-    // Abre una conexión temporal solo para esto.
     // -----------------------------------------------------------
     private static void initializeDatabase(DBConfigSingleton dbConfig) {
         System.out.println("Iniciando esquema de base de datos...");

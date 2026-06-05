@@ -116,3 +116,17 @@ CREATE TABLE IF NOT EXISTS plans (
     created_at  DATETIME,
     updated_at  DATETIME
 );
+
+-- =============================================================
+-- CAREER_SUBJECTS — tabla de junction entre carreras y materias
+-- Una carrera puede tener muchas materias y viceversa (M:N)
+-- =============================================================
+CREATE TABLE IF NOT EXISTS career_subjects (
+    career_id   INTEGER NOT NULL,
+    subject_id  INTEGER NOT NULL,
+
+    PRIMARY KEY (career_id, subject_id),
+
+    FOREIGN KEY (career_id)  REFERENCES careers(id)  ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+);

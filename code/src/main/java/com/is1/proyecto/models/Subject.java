@@ -1,9 +1,11 @@
 package com.is1.proyecto.models;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.Many2Many;
 import org.javalite.activejdbc.annotations.Table;
 
 @Table("subjects")
+@Many2Many(other = Career.class, join = "career_subjects", sourceFKName = "subject_id", targetFKName = "career_id")
 public class Subject extends Model {
 
     public Integer getCode() {
