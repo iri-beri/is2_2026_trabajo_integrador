@@ -130,3 +130,18 @@ CREATE TABLE IF NOT EXISTS career_subjects (
     FOREIGN KEY (career_id)  REFERENCES careers(id)  ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );
+
+-- =============================================================
+-- PROFESSOR_SUBJECTS — tabla de junction entre profesores y materias
+-- Un profesor puede dictar muchas materias (M:N)
+-- Se agrega al scheme.sql existente
+-- =============================================================
+CREATE TABLE IF NOT EXISTS professor_subjects (
+    professor_person_id  INTEGER NOT NULL,
+    subject_id           INTEGER NOT NULL,
+
+    PRIMARY KEY (professor_person_id, subject_id),
+
+    FOREIGN KEY (professor_person_id) REFERENCES professors(person_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id)          REFERENCES subjects(id)           ON DELETE CASCADE
+);
