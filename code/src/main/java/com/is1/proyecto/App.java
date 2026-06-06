@@ -38,6 +38,7 @@ public class App {
         new StudyPlanRoutes().register();
         new ProfessorSubjectRoutes().register();
         new RegistrationSubjectRoutes().register();
+        CareerStudentRoutes.register();
         new ProfessorDashboardRoutes().register();
     }
 
