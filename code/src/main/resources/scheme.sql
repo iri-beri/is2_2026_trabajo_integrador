@@ -49,7 +49,9 @@ CREATE TABLE IF NOT EXISTS professors (
 -- STUDENTS — subclass of Person
 -- =============================================================
 CREATE TABLE IF NOT EXISTS students (
-    person_id           INTEGER PRIMARY KEY,
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id           INTEGER NOT NULL UNIQUE,
+
     birthplace          TEXT,
     town_of_residence   TEXT,
     contact_relative    TEXT,
@@ -58,8 +60,9 @@ CREATE TABLE IF NOT EXISTS students (
     created_at          DATETIME,
     updated_at          DATETIME,
 
-    FOREIGN KEY (person_id) REFERENCES persons(id)
-    ON DELETE CASCADE
+    FOREIGN KEY(person_id)
+        REFERENCES persons(id)
+        ON DELETE CASCADE
 );
 
 -- =============================================================
@@ -156,4 +159,17 @@ CREATE TABLE IF NOT EXISTS registration_subjects (
     FOREIGN KEY (subject_id) REFERENCES subjects(id)        ON DELETE CASCADE,
 
     UNIQUE (student_id, subject_id)
+);
+-- =============================================================
+-- CAREER_STUDENTS — join table Many2Many Career ↔ Student
+-- Un estudiante puede estar en más de una carrera.
+-- =============================================================
+CREATE TABLE IF NOT EXISTS career_students (
+    career_id   INTEGER NOT NULL,
+    student_id  INTEGER NOT NULL,
+
+    PRIMARY KEY (career_id, student_id),
+
+    FOREIGN KEY (career_id)  REFERENCES careers(id)           ON DELETE CASCADE,
+    FOREIGN KEY (student_id) REFERENCES students(person_id)   ON DELETE CASCADE
 );
