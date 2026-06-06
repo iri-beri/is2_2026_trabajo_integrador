@@ -57,7 +57,7 @@ public class RegistrationSubjectController extends BaseController {
             res.redirect("/registration/create?error=" + encode(e.getMessage()));
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             res.status(500);
             res.redirect("/registration/create?error=" + encode("Error interno. Intente de nuevo."));
         }
