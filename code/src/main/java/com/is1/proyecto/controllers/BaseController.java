@@ -50,6 +50,14 @@ public abstract class BaseController {
         req.session(true).attribute("currentUserUsername", person.getUsername());
         req.session().attribute("userId", person.getLongId());
         req.session().attribute("loggedIn", true);
+        
+        if (person.isAdmin()) {
+        	req.session().attribute("role", "ADMIN");
+    	} else if (person.isProfessor()) {
+        	req.session().attribute("role", "PROFESSOR");
+    	} else if (person.isStudent()) {
+        	req.session().attribute("role", "STUDENT");
+    	}
     }
 
     // ----------------------------------------------------------------

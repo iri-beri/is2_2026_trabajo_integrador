@@ -140,6 +140,7 @@ public class AdminController extends BaseController {
                 row.put("email",     p != null ? p.getString("email")     : "");
                 row.put("cellphone", p != null ? p.getString("cellphone") : "");
                 row.put("position",  prof.getPosition() != null ? prof.getPosition() : "");
+                row.put("personId",  prof.getPersonId());
 
                 row.put("first", i == 0);
                 row.put("last",  i == total - 1);
