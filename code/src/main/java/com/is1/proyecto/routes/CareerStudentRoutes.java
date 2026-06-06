@@ -16,28 +16,15 @@ public class CareerStudentRoutes {
         CareerStudentController controller =
             new CareerStudentController(service, templateEngine);
 
-        // -----------------------------------------------------------
-        // Filtro ADMIN — mismo patrón que CareerRoutes
-        // -----------------------------------------------------------
-        Spark.before("/careers/*/students",        (req, res) -> requireAdmin(req, res));
-        Spark.before("/careers/*/students/*",      (req, res) -> requireAdmin(req, res));
+        // Filtro ADMIN
+        Spark.before("/career-student/*", (req, res) -> requireAdmin(req, res));
 
-        // -----------------------------------------------------------
         // Rutas
-        // -----------------------------------------------------------
-        Spark.get("/careers/:id/students",
-            controller::showCareerStudents);
-
-        Spark.post("/careers/:id/students/add",
-            controller::addStudentToCareer);
-
-        Spark.post("/careers/:id/students/:studentId/remove",
-            controller::removeStudentFromCareer);
+        Spark.get("/career-student/enroll",        controller::showForm);
+        Spark.post("/career-student/enroll",        controller::enroll);
+        Spark.get("/career-student/confirmation",   controller::showConfirmation);
     }
 
-    // -----------------------------------------------------------
-    // Mismo helper de autorización que CareerRoutes
-    // -----------------------------------------------------------
     private static void requireAdmin(spark.Request req, spark.Response res) {
 
         Boolean loggedIn = req.session().attribute("loggedIn");

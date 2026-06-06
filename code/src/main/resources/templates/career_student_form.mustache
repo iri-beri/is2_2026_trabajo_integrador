@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscribir Alumno a Carrera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
+
+        <h1 class="text-2xl font-extrabold text-center text-gray-900 mb-2">
+            Inscribir Alumno a Carrera
+        </h1>
+        <p class="text-center text-gray-500 text-sm mb-6">
+            Ingresá el DNI del alumno y el código de la carrera.
+        </p>
+
+        {{#errorMessage}}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-sm">
+            {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
+        <form action="/career-student/enroll" method="post" class="space-y-4">
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1"
+                       for="student_dni">DNI del Alumno</label>
+                <input type="text" id="student_dni" name="student_dni" required
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+                       placeholder="Ej: 12345678" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1"
+                       for="career_code">Código de Carrera</label>
+                <input type="number" id="career_code" name="career_code" required
+                       class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+                       placeholder="Ej: 101" />
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-purple-600 text-white py-2 px-4 rounded-full font-bold hover:bg-purple-700 transition duration-300 shadow-lg mt-2">
+                Inscribir
+            </button>
+
+        </form>
+
+        <div class="text-center mt-6">
+            <a href="/dashboard"
+               class="text-purple-600 hover:underline text-sm font-medium">
+                ← Volver al Dashboard
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

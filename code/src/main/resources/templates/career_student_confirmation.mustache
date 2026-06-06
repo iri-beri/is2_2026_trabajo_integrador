@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción Confirmada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
+
+        <div class="text-center mb-6">
+            <p class="text-4xl mb-2">✅</p>
+            <h1 class="text-2xl font-extrabold text-gray-900">Inscripción Confirmada</h1>
+            <p class="text-gray-500 text-sm mt-1">El alumno fue inscripto correctamente a la carrera.</p>
+        </div>
+
+        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+            <h2 class="text-sm font-bold text-purple-700 uppercase tracking-wide mb-2">Alumno</h2>
+            <p class="text-gray-800 font-medium">{{studentName}} {{studentSurname}}</p>
+            <p class="text-gray-500 text-sm">DNI: {{studentDni}}</p>
+            <p class="text-gray-500 text-sm">Email: {{studentEmail}}</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+            <h2 class="text-sm font-bold text-amber-700 uppercase tracking-wide mb-2">Carrera</h2>
+            <p class="text-gray-800 font-medium">{{careerName}}</p>
+            <p class="text-gray-500 text-sm">Código: {{careerCode}}</p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+            <a href="/career-student/enroll"
+               class="w-full text-center bg-purple-600 text-white py-2 px-4 rounded-full font-bold hover:bg-purple-700 transition duration-300 shadow">
+                Nueva Inscripción
+            </a>
+            <a href="/dashboard"
+               class="w-full text-center text-purple-600 hover:underline text-sm font-medium mt-1">
+                ← Volver al Dashboard
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -52,7 +52,9 @@ CREATE TABLE IF NOT EXISTS professors (
 -- Only stores attributes specific to Student
 -- =============================================================
 CREATE TABLE IF NOT EXISTS students (
-    person_id           INTEGER PRIMARY KEY,
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id           INTEGER NOT NULL UNIQUE,
+
     birthplace          TEXT,
     town_of_residence   TEXT,
     contact_relative    TEXT,
@@ -61,8 +63,9 @@ CREATE TABLE IF NOT EXISTS students (
     created_at          DATETIME,
     updated_at          DATETIME,
 
-    FOREIGN KEY (person_id) REFERENCES persons(id)
-    ON DELETE CASCADE
+    FOREIGN KEY(person_id)
+        REFERENCES persons(id)
+        ON DELETE CASCADE
 );
 
 -- =============================================================
