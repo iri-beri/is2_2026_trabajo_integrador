@@ -2,255 +2,279 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { font-family: 'Inter', sans-serif; }
+        .field-view  { display: block; }
+        .field-edit  { display: none; }
+        .editing .field-view { display: none; }
+        .editing .field-edit { display: block; }
+    </style>
 </head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4"
-        style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+<div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-3xl border border-gray-200">
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+    <!-- Encabezado -->
+    <div class="flex items-center justify-between mb-2">
+        <h1 class="text-3xl font-extrabold text-gray-900">Mi Perfil</h1>
+        <a href="/dashboard"
+           class="inline-block bg-gray-200 text-gray-700 py-2 px-5 rounded-full font-medium hover:bg-gray-300 transition duration-300 shadow">
+            ← Volver al Panel
+        </a>
+    </div>
 
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
-            Mi Perfil
-        </h1>
+    <hr class="my-6 border-indigo-100">
 
-        <!-- Mensajes -->
-        {{#successMessage}}
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{successMessage}}
-        </div>
-        {{/successMessage}}
+    <!-- Mensajes flash -->
+    {{#successMessage}}
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6">
+        ✓ {{successMessage}}
+    </div>
+    {{/successMessage}}
 
-        {{#errorMessage}}
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{errorMessage}}
-        </div>
-        {{/errorMessage}}
+    {{#errorMessage}}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6">
+        ✗ {{errorMessage}}
+    </div>
+    {{/errorMessage}}
 
-        <!-- Información Personal -->
-        <h2 class="text-xl font-semibold text-gray-700 mb-4">
-            Información Personal
-        </h2>
+    <!-- Badges de rol -->
+    <div class="flex flex-wrap gap-2 mb-8">
+        {{#isAdmin}}
+        <span class="bg-red-100 text-red-800 px-4 py-1 rounded-full text-sm font-semibold border border-red-200">
+            Administrador
+        </span>
+        {{/isAdmin}}
+        {{#isProfessor}}
+        <span class="bg-indigo-100 text-indigo-800 px-4 py-1 rounded-full text-sm font-semibold border border-indigo-200">
+            Profesor
+        </span>
+        {{/isProfessor}}
+        {{#isStudent}}
+        <span class="bg-green-100 text-green-800 px-4 py-1 rounded-full text-sm font-semibold border border-green-200">
+            Estudiante
+        </span>
+        {{/isStudent}}
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- ============================================================ -->
+    <!-- FORMULARIO DE EDICIÓN DE PERFIL                              -->
+    <!-- ============================================================ -->
+    <form id="profileForm" action="/settings/update" method="post">
 
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Nombre
-                </label>
-                <input type="text"
-                        value="{{name}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Apellido
-                </label>
-                <input type="text"
-                        value="{{surname}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    DNI
-                </label>
-                <input type="text"
-                        value="{{dni}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Usuario
-                </label>
-                <input type="text"
-                        value="{{username}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Email
-                </label>
-                <input type="text"
-                        value="{{email}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Celular
-                </label>
-                <input type="text"
-                        value="{{cellphone}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
-            <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Fecha de Nacimiento
-                </label>
-                <input type="text"
-                        value="{{birthdate}}"
-                        disabled
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
-            </div>
-
+        <!-- Sección: Información Personal -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-gray-800">Información Personal</h2>
+            <button type="button" id="editBtn" onclick="toggleEdit()"
+                    class="text-sm bg-indigo-600 text-white py-1 px-4 rounded-full font-semibold hover:bg-indigo-700 transition duration-200 shadow">
+                ✏ Editar
+            </button>
         </div>
 
-        <!-- Roles -->
-        <h2 class="text-xl font-semibold text-gray-700 mt-8 mb-4 border-t border-gray-200 pt-4">
-            Privilegios del Usuario
-        </h2>
+        <div id="profileFields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
-        <div class="flex flex-wrap gap-3">
+            <!-- Nombre -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Nombre</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{name}}</p>
+                <input type="text" name="name" value="{{name}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
 
-            {{#isAdmin}}
-            <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold">
-                Administrador
-            </span>
-            {{/isAdmin}}
+            <!-- Apellido -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Apellido</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{surname}}</p>
+                <input type="text" name="surname" value="{{surname}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
 
-            {{#isProfessor}}
-            <span class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-semibold">
-                Profesor
-            </span>
-            {{/isProfessor}}
+            <!-- DNI (no editable) -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">DNI</label>
+                <p class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{dni}}</p>
+            </div>
 
-            {{#isStudent}}
-            <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
-                Estudiante
-            </span>
-            {{/isStudent}}
+            <!-- Usuario (no editable) -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Usuario</label>
+                <p class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{username}}</p>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Email</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{email}}</p>
+                <input type="email" name="email" value="{{email}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Celular -->
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Celular</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{cellphone}}</p>
+                <input type="text" name="cellphone" value="{{cellphone}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Fecha de nacimiento -->
+            <div class="md:col-span-2">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Fecha de Nacimiento</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{birthdate}}</p>
+                <input type="date" name="birthdate" value="{{birthdate}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
 
         </div>
 
+        <!-- Sección: Información Académica (solo profesor) -->
         {{#professor}}
-
-        <h2 class="text-xl font-semibold text-gray-700 mt-8 mb-4 border-t border-gray-200 pt-4">
-            Información Académica
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 border-t border-indigo-100 pt-6">Información Académica</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Título
-                </label>
-
-                <input type="text"
-                    value="{{degree}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Título</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{degree}}</p>
+                <input type="text" name="degree" value="{{degree}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Universidad
-                </label>
-
-                <input type="text"
-                    value="{{graduate_univ}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Universidad</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{graduate_univ}}</p>
+                <input type="text" name="graduate_univ" value="{{graduate_univ}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div class="md:col-span-2">
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Cargo
-                </label>
-
-                <input type="text"
-                    value="{{position}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Cargo</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{position}}</p>
+                <input type="text" name="position" value="{{position}}"
+                       class="field-edit w-full px-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
 
         </div>
-
         {{/professor}}
 
+        <!-- Sección: Información Estudiantil (solo estudiante) -->
         {{#student}}
-
-        <h2 class="text-xl font-semibold text-gray-700 mt-8 mb-4 border-t border-gray-200 pt-4">
-            Información Estudiantil
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 border-t border-indigo-100 pt-6">Información Estudiantil</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Lugar de nacimiento
-                </label>
-
-                <input type="text"
-                    value="{{birthplace}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Lugar de Nacimiento</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{birthplace}}</p>
+                <input type="text" name="birthplace" value="{{birthplace}}"
+                       class="field-edit w-full px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Residencia
-                </label>
-
-                <input type="text"
-                    value="{{town_of_residence}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Residencia</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{town_of_residence}}</p>
+                <input type="text" name="town_of_residence" value="{{town_of_residence}}"
+                       class="field-edit w-full px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Contacto familiar
-                </label>
-
-                <input type="text"
-                    value="{{contact_relative}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Contacto Familiar</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{contact_relative}}</p>
+                <input type="text" name="contact_relative" value="{{contact_relative}}"
+                       class="field-edit w-full px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
 
             <div>
-                <label class="block text-gray-700 text-sm font-medium mb-1">
-                    Teléfono de contacto
-                </label>
-
-                <input type="text"
-                    value="{{contact_cellphone}}"
-                    disabled
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100">
+                <label class="block text-gray-600 text-sm font-medium mb-1">Teléfono de Contacto</label>
+                <p class="field-view w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-800">{{contact_cellphone}}</p>
+                <input type="text" name="contact_cellphone" value="{{contact_cellphone}}"
+                       class="field-edit w-full px-4 py-2 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
             </div>
 
         </div>
-
         {{/student}}
 
-        <!-- Acciones -->
-        <div class="mt-8 flex flex-col sm:flex-row gap-4">
-
-            <a href="/settings"
-                class="flex-1 text-center bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700">
-                Editar Perfil
-            </a>
-
-            <a href="/dashboard"
-                class="flex-1 text-center bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700">
-                Volver al Dashboard
-            </a>
-
+        <!-- Botones guardar/cancelar (ocultos hasta editar) -->
+        <div id="saveBar" class="hidden flex gap-3 mt-2 mb-4">
+            <button type="submit"
+                    class="flex-1 bg-indigo-600 text-white py-2 px-6 rounded-full font-bold shadow-lg hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+                Guardar Cambios
+            </button>
+            <button type="button" onclick="cancelEdit()"
+                    class="flex-1 bg-gray-200 text-gray-700 py-2 px-6 rounded-full font-semibold hover:bg-gray-300 transition duration-200">
+                Cancelar
+            </button>
         </div>
 
+    </form>
+
+    <!-- ============================================================ -->
+    <!-- CAMBIO DE CONTRASEÑA                                         -->
+    <!-- ============================================================ -->
+    <div class="border-t border-indigo-100 pt-6 mt-2">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Cambiar Contraseña</h2>
+
+        <form action="/settings/password" method="post" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <div>
+                    <label class="block text-gray-600 text-sm font-medium mb-1">Contraseña actual</label>
+                    <input type="password" name="currentPassword"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div>
+                    <label class="block text-gray-600 text-sm font-medium mb-1">Nueva contraseña</label>
+                    <input type="password" name="newPassword"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+                <div>
+                    <label class="block text-gray-600 text-sm font-medium mb-1">Confirmar contraseña</label>
+                    <input type="password" name="confirmPassword"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="bg-indigo-600 text-white py-2 px-6 rounded-full font-bold shadow hover:bg-indigo-700 transition duration-300">
+                Cambiar Contraseña
+            </button>
+        </form>
     </div>
+
+</div>
+
+<script>
+    function toggleEdit() {
+        const fields = document.getElementById('profileFields');
+        const saveBar = document.getElementById('saveBar');
+        const btn = document.getElementById('editBtn');
+
+        fields.classList.toggle('editing');
+
+        const isEditing = fields.classList.contains('editing');
+        saveBar.classList.toggle('hidden', !isEditing);
+        btn.textContent = isEditing ? '✕ Cancelar edición' : '✏ Editar';
+        btn.classList.toggle('bg-gray-400', isEditing);
+        btn.classList.toggle('bg-indigo-600', !isEditing);
+    }
+
+    function cancelEdit() {
+        const fields = document.getElementById('profileFields');
+        const saveBar = document.getElementById('saveBar');
+        const btn = document.getElementById('editBtn');
+
+        fields.classList.remove('editing');
+        saveBar.classList.add('hidden');
+        btn.textContent = '✏ Editar';
+        btn.classList.remove('bg-gray-400');
+        btn.classList.add('bg-indigo-600');
+    }
+</script>
 
 </body>
 </html>

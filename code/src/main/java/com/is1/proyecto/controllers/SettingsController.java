@@ -43,9 +43,9 @@ public class SettingsController extends BaseController {
         try {
             ProfileUpdateDTO dto = buildDTO(req);
             settingsService.updateProfile(dto);
-            res.redirect("/settings?message=" + encode("Perfil actualizado correctamente"));
+            res.redirect("/profile?message=" + encode("Perfil actualizado correctamente."));
         } catch (ServiceException e) {
-            res.redirect("/settings?error=" + encode(e.getMessage()));
+            res.redirect("/profile?error=" + encode(e.getMessage()));
         }
 
         return null;
@@ -60,9 +60,9 @@ public class SettingsController extends BaseController {
                                     req.queryParams("newPassword"),
                                     req.queryParams("confirmPassword"));
 
-            res.redirect("/settings?message=Contraseña actualizada correctamente");
+            res.redirect("/profile?message=" + encode("Contraseña actualizada correctamente."));
         } catch (ServiceException e) {
-            res.redirect("/settings?error=" + encode(e.getMessage()));
+            res.redirect("/profile?error=" + encode(e.getMessage()));
         }
 
         return null;
