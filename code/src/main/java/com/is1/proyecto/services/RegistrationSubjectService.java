@@ -5,12 +5,12 @@ import com.is1.proyecto.models.RegistrationSubject;
 import com.is1.proyecto.models.Student;
 import com.is1.proyecto.models.Subject;
 import com.is1.proyecto.services.dto.RegistrationSubjectCreateDTO;
-
+import org.javalite.activejdbc.Base;
 import java.time.LocalDate;
 
 public class RegistrationSubjectService {
 
-    // -----------------------------------------------------------
+    // ---------------------------------------------------------
     // Inscribe un Student a un Subject.
     // Devuelve el RegistrationSubject creado.
     // Lanza ServiceException ante cualquier fallo de negocio.
@@ -21,6 +21,8 @@ public class RegistrationSubjectService {
 
         Student student = findStudent(dto.studentDni);
         Subject subject = findSubject(dto.subjectId);
+
+        checkSubjectBelongsToStudentCareer(student, subject); 
 
         checkNotAlreadyRegistered(student.getPersonId(),subject.getLongId());
 
@@ -101,6 +103,28 @@ public class RegistrationSubjectService {
         if (exists) {
             throw new ServiceException(
                 "El alumno ya está inscripto en esa materia.", 409);
+        }
+    }
+
+    private void checkSubjectBelongsToStudentCareer(Student student, Subject subject) {
+        Object result = Base.firstCell(
+            """
+            SELECT COUNT(*)
+            FROM career_subjects cs
+            JOIN career_students cst ON cs.career_id = cst.career_id
+            WHERE cst.student_id = ?
+            AND cs.subject_id = ?
+            """,
+            student.getPersonId(),
+            subject.getLongId()
+        );
+
+        long count = result != null ? ((Number) result).longValue() : 0L;
+
+        if (count == 0) {
+            throw new ServiceException(
+                "La materia no pertenece a la carrera del estudiante.", 400
+            );
         }
     }
 }
