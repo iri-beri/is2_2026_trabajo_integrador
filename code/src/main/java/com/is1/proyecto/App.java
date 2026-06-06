@@ -36,11 +36,9 @@ public class App {
         new SubjectRoutes().register();
         CareerRoutes.register();        // ← ahora sin parámetros, igual que las demás
         new StudyPlanRoutes().register();
-<<<<<<< HEAD
         new ProfessorSubjectRoutes().register();
-=======
         new RegistrationSubjectRoutes().register();
->>>>>>> b051fb8ce7e0dace2202f038836a7d89f077fbde
+        new ProfessorDashboardRoutes().register();
     }
 
     // -----------------------------------------------------------
