@@ -40,6 +40,8 @@ public class App {
         new RegistrationSubjectRoutes().register();
         CareerStudentRoutes.register();
         new ProfessorDashboardRoutes().register();
+        new ProfileRoutes().register();
+        new SettingsRoutes().register();
     }
 
     // -----------------------------------------------------------
