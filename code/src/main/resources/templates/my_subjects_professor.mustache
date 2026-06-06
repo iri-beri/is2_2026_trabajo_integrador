@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Materias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-4xl border border-gray-200">
+
+        <!-- Encabezado -->
+        <div class="flex items-center justify-between mb-2">
+            <div>
+                <h1 class="text-3xl font-extrabold text-gray-900">Mis Materias</h1>
+                <p class="text-gray-500 mt-1 text-sm">
+                    Materias asignadas a
+                    <span class="font-semibold text-indigo-700">{{username}}</span>
+                </p>
+            </div>
+            <a href="/dashboard"
+               class="inline-block bg-gray-200 text-gray-700 py-2 px-5 rounded-full font-medium hover:bg-gray-300 transition duration-300 shadow">
+                ← Volver al Panel
+            </a>
+        </div>
+
+        <hr class="my-6 border-indigo-100">
+
+        {{#errorMessage}}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            ✗ {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
+        <!-- Sin materias -->
+        {{^subjects}}
+        <div class="bg-indigo-50 border border-indigo-200 p-8 rounded-lg text-center shadow-sm">
+            <p class="text-indigo-600 font-medium text-lg">No tenés materias asignadas aún.</p>
+            <p class="text-gray-400 text-sm mt-1">Contactá al administrador para que te asigne materias.</p>
+        </div>
+        {{/subjects}}
+
+        <!-- Tabla de materias -->
+        {{#subjects}}
+        {{#first}}
+        <div class="overflow-x-auto rounded-lg shadow-md border border-indigo-200">
+            <table class="min-w-full text-sm text-gray-700">
+                <thead>
+                    <tr class="bg-indigo-600 text-white text-left">
+                        <th class="py-3 px-5 font-semibold">Código</th>
+                        <th class="py-3 px-5 font-semibold">Nombre</th>
+                        <th class="py-3 px-5 font-semibold">Horas</th>
+                        <th class="py-3 px-5 font-semibold">Programa</th>
+                    </tr>
+                </thead>
+                <tbody>
+        {{/first}}
+                    <tr class="border-b border-indigo-100 hover:bg-indigo-50 transition duration-150">
+                        <td class="py-3 px-5 font-mono text-indigo-700 font-semibold">{{code}}</td>
+                        <td class="py-3 px-5 font-medium">{{name}}</td>
+                        <td class="py-3 px-5">{{hours}} hs</td>
+                        <td class="py-3 px-5 text-gray-500">{{courseSyllabus}}</td>
+                    </tr>
+        {{#last}}
+                </tbody>
+            </table>
+        </div>
+        {{/last}}
+        {{/subjects}}
+
+        <!-- Cerrar sesión -->
+        <div class="flex justify-end mt-8">
+            <a href="/logout"
+               class="inline-block bg-red-600 text-white py-2 px-6 rounded-full font-medium hover:bg-red-700 transition duration-300 shadow-md">
+                Cerrar Sesión
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

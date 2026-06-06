@@ -4,14 +4,14 @@
 -- =============================================================
 CREATE TABLE IF NOT EXISTS persons (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    dni         TEXT    NOT NULL UNIQUE,  -- TEXT: avoids leading zero issues
-    name        TEXT       NOT NULL,
-    surname     TEXT       NOT NULL,
-    username    TEXT       NOT NULL UNIQUE,
-    password    TEXT       NOT NULL,
+    dni         TEXT    NOT NULL UNIQUE,
+    name        TEXT    NOT NULL,
+    surname     TEXT    NOT NULL,
+    username    TEXT    NOT NULL UNIQUE,
+    password    TEXT    NOT NULL,
     cellphone   TEXT,
     birthdate   DATE,
-    email       TEXT       NOT NULL UNIQUE,
+    email       TEXT    NOT NULL UNIQUE,
 
     created_at  DATETIME,
     updated_at  DATETIME
@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS persons (
 
 -- =============================================================
 -- PERSON_ROLES — many roles per person
--- A person can be PROFESSOR and STUDENT simultaneously
 -- =============================================================
 CREATE TABLE IF NOT EXISTS person_roles (
     person_id   INTEGER NOT NULL,
@@ -32,7 +31,6 @@ CREATE TABLE IF NOT EXISTS person_roles (
 
 -- =============================================================
 -- PROFESSORS — subclass of Person
--- Only stores attributes specific to Professor
 -- =============================================================
 CREATE TABLE IF NOT EXISTS professors (
     person_id       INTEGER PRIMARY KEY,
@@ -49,7 +47,6 @@ CREATE TABLE IF NOT EXISTS professors (
 
 -- =============================================================
 -- STUDENTS — subclass of Person
--- Only stores attributes specific to Student
 -- =============================================================
 CREATE TABLE IF NOT EXISTS students (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,7 +67,6 @@ CREATE TABLE IF NOT EXISTS students (
 
 -- =============================================================
 -- ADMINISTRATORS — subclass of Person
--- No extra attributes, only the FK to persons
 -- =============================================================
 CREATE TABLE IF NOT EXISTS administrators (
     person_id   INTEGER PRIMARY KEY,
@@ -103,7 +99,7 @@ CREATE TABLE IF NOT EXISTS careers (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     code        INTEGER NOT NULL UNIQUE,
     name        TEXT    NOT NULL,
- 
+
     created_at  DATETIME,
     updated_at  DATETIME
 );
@@ -121,8 +117,7 @@ CREATE TABLE IF NOT EXISTS plans (
 );
 
 -- =============================================================
--- CAREER_SUBJECTS — tabla de junction entre carreras y materias
--- Una carrera puede tener muchas materias y viceversa (M:N)
+-- CAREER_SUBJECTS — junction entre carreras y materias (M:N)
 -- =============================================================
 CREATE TABLE IF NOT EXISTS career_subjects (
     career_id   INTEGER NOT NULL,
@@ -133,9 +128,22 @@ CREATE TABLE IF NOT EXISTS career_subjects (
     FOREIGN KEY (career_id)  REFERENCES careers(id)  ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
 );
+
 -- =============================================================
--- REGISTRATION_SUBJECTS — asociación Student ↔ Subject
--- La fecha se genera automáticamente desde el service.
+-- PROFESSOR_SUBJECTS — junction entre profesores y materias (M:N)
+-- =============================================================
+CREATE TABLE IF NOT EXISTS professor_subjects (
+    professor_person_id  INTEGER NOT NULL,
+    subject_id           INTEGER NOT NULL,
+
+    PRIMARY KEY (professor_person_id, subject_id),
+
+    FOREIGN KEY (professor_person_id) REFERENCES professors(person_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id)          REFERENCES subjects(id)          ON DELETE CASCADE
+);
+
+-- =============================================================
+-- REGISTRATION_SUBJECTS — asociación Student <-> Subject
 -- Un alumno no puede inscribirse dos veces a la misma materia.
 -- =============================================================
 CREATE TABLE IF NOT EXISTS registration_subjects (
