@@ -173,3 +173,25 @@ CREATE TABLE IF NOT EXISTS career_students (
     FOREIGN KEY (career_id)  REFERENCES careers(id)           ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES students(person_id)   ON DELETE CASCADE
 );
+
+-- =============================================================
+-- GRADES — notas cargadas por profesores a alumnos por materia
+-- Agregar al final de scheme.sql
+-- =============================================================
+CREATE TABLE IF NOT EXISTS grades (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id  INTEGER NOT NULL,
+    subject_id  INTEGER NOT NULL,
+    professor_id INTEGER NOT NULL,
+    grade       REAL    NOT NULL,
+    description TEXT,
+    date        DATE    NOT NULL,
+ 
+    created_at  DATETIME,
+    updated_at  DATETIME,
+ 
+    FOREIGN KEY (student_id)   REFERENCES students(person_id)   ON DELETE CASCADE,
+    FOREIGN KEY (subject_id)   REFERENCES subjects(id)          ON DELETE CASCADE,
+    FOREIGN KEY (professor_id) REFERENCES professors(person_id) ON DELETE CASCADE
+);
+ 

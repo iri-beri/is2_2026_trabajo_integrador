@@ -19,9 +19,9 @@ public class StudentDashboardController extends BaseController {
     // -----------------------------------------------------------
     public String showDashboard(Request req, Response res) {
 
-        String username = req.session().attribute("currentUserUsername");
+        String username  = req.session().attribute("currentUserUsername");
         Boolean loggedIn = req.session().attribute("loggedIn");
-        String role = req.session().attribute("userRole");
+        String role      = req.session().attribute("role"); // ← "role", no "userRole"
 
         if (username == null || loggedIn == null || !loggedIn || !"STUDENT".equals(role)) {
             res.redirect("/login?error=" + encode("Acceso no autorizado."));
