@@ -7,6 +7,7 @@ import com.is1.proyecto.models.Subject;
 import com.is1.proyecto.services.dto.RegistrationSubjectCreateDTO;
 import org.javalite.activejdbc.Base;
 import java.time.LocalDate;
+import java.util.List;
 
 public class RegistrationSubjectService {
 
@@ -126,5 +127,24 @@ public class RegistrationSubjectService {
                 "La materia no pertenece a la carrera del estudiante.", 400
             );
         }
+    }
+    public List<Subject> getAvailableSubjectsForStudent(String dni) {
+
+        Student student = findStudent(dni);
+
+        return Subject.findBySQL(
+            """
+            SELECT s.*
+            FROM subjects s
+            JOIN career_subjects cs ON cs.subject_id = s.id
+            JOIN career_students cst ON cst.career_id = cs.career_id
+            WHERE cst.student_id = ?
+            AND s.id NOT IN (
+                SELECT subject_id FROM registration_subjects WHERE student_id = ?
+            )
+            """,
+            student.getPersonId(),
+            student.getPersonId()
+        );
     }
 }
