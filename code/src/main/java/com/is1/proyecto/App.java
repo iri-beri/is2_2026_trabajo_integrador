@@ -2,6 +2,8 @@ package com.is1.proyecto;
 
 import com.is1.proyecto.config.DBConfigSingleton;
 import com.is1.proyecto.routes.*;
+
+
 import org.javalite.activejdbc.Base;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,6 +40,7 @@ public class App {
         new StudyPlanRoutes().register();
         new ProfessorSubjectRoutes().register();
         new RegistrationSubjectRoutes().register();
+        new StudentSubjectRoutes().register();
         CareerStudentRoutes.register();
         new ProfessorDashboardRoutes().register();
         new GradeRoutes().register();

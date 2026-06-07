@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inscripción a Materias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8">
+
+<h1 class="text-2xl font-bold mb-6">
+    Materias disponibles
+</h1>
+
+{{#subjects}}
+<div class="border rounded p-4 mb-3">
+
+    <h2 class="font-bold">
+        {{name}}
+    </h2>
+
+    <p>Código: {{code}}</p>
+    <p>Horas: {{hours}}</p>
+
+    <form action="/student/subjects/enroll" method="post">
+
+        <input type="hidden"
+               name="subject_id"
+               value="{{id}}">
+
+        <button
+            class="bg-green-600 text-white px-4 py-2 rounded mt-2">
+
+            Inscribirme
+        </button>
+
+    </form>
+
+</div>
+{{/subjects}}
+
+{{^hasSubjects}}
+<p>No hay materias disponibles.</p>
+{{/hasSubjects}}
+
+</body>
+</html>
