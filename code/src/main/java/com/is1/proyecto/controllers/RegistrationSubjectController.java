@@ -13,7 +13,9 @@ import spark.Request;
 import spark.Response;
 import spark.template.mustache.MustacheTemplateEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RegistrationSubjectController extends BaseController {
@@ -27,44 +29,109 @@ public class RegistrationSubjectController extends BaseController {
         super(templateEngine);
         this.registrationService = registrationService;
     }
+    // GET /registration
+    public String showStudents(Request req, Response res) {
 
-    // -----------------------------------------------------------
+        Map<String, Object> model = new HashMap<>();
+        addFlashMessages(req, model);
+
+        try {
+            List<Student> students = Student.findAll();
+            List<Map<String, Object>> studentMaps = new ArrayList<>();
+
+            for (Student s : students) {
+                Person p = s.getPerson();
+                Map<String, Object> m = new HashMap<>();
+                m.put("dni",      p.getDni());
+                m.put("name",     p.getName());
+                m.put("surname",  p.getSurname());
+                studentMaps.add(m);
+            }
+
+            model.put("students",    studentMaps);
+            model.put("hasStudents", !studentMaps.isEmpty());
+
+        } catch (Exception e) {
+            model.put("hasStudents", false);
+        }
+
+        return templateEngine.render(new ModelAndView(model, "registration_students.mustache"));
+    }
     // GET /registration/create
-    // -----------------------------------------------------------
     public String showForm(Request req, Response res) {
 
         Map<String, Object> model = new HashMap<>();
         addFlashMessages(req, model);
 
-        return templateEngine.render(new ModelAndView(model, "registration_form.mustache"));
-    }
+        String dni = req.queryParams("student_dni");
 
-    // -----------------------------------------------------------
-    // POST /registration/new
-    // -----------------------------------------------------------
-    public String create(Request req, Response res) {
-
-        RegistrationSubjectCreateDTO dto = buildDTO(req);
+        if (dni == null || dni.isBlank()) {
+            res.redirect("/students?error=" + encode("Ingresá el DNI del alumno."));
+            return "";
+        }
 
         try {
+            List<Subject> available = registrationService.getAvailableSubjectsForStudent(dni);
 
-            RegistrationSubject registration = registrationService.create(dto);
-            res.redirect("/registration/confirmation/" + registration.getLongId());
+            model.put("studentDni",         dni);
+            model.put("availableSubjects",  buildSubjectMaps(available));
+            model.put("hasAvailable",       !available.isEmpty());
 
         } catch (ServiceException e) {
+            res.redirect("/students?error=" + encode(e.getMessage()));
+            return "";
+        }
 
+        return templateEngine.render(new ModelAndView(model, "registration_create.mustache"));
+    }
+
+    // POST /registration/new
+    public String create(Request req, Response res) {
+
+        String dni = req.queryParams("student_dni");
+        Long subjectId;
+
+        try {
+            subjectId = Long.parseLong(req.queryParams("subject_id"));
+        } catch (NumberFormatException e) {
+            res.redirect("/registration/create?student_dni=" + encode(dni) 
+                + "&error=" + encode("Materia inválida."));
+            return "";
+        }
+
+        RegistrationSubjectCreateDTO dto = new RegistrationSubjectCreateDTO();
+        dto.studentDni = dni;
+        dto.subjectId  = subjectId;
+
+        try {
+            RegistrationSubject saved = registrationService.create(dto);
+            res.redirect("/registration/confirmation/" + saved.getLongId()); 
+        } catch (ServiceException e) {
             res.status(e.getStatusCode());
-            res.redirect("/registration/create?error=" + encode(e.getMessage()));
-
+            res.redirect("/registration/create?student_dni=" + encode(dni)
+                + "&error=" + encode(e.getMessage()));
         } catch (Exception e) {
-            e.printStackTrace();
             res.status(500);
-            res.redirect("/registration/create?error=" + encode("Error interno. Intente de nuevo."));
+            res.redirect("/registration/create?student_dni=" + encode(dni)
+                + "&error=" + encode("Error interno. Intente de nuevo."));
         }
 
         return "";
     }
 
+    // Helper
+    private List<Map<String, Object>> buildSubjectMaps(List<Subject> subjects) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (Subject s : subjects) {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id",    s.getLongId());
+            m.put("name",  s.getName());
+            m.put("code",  s.getCode());
+            m.put("hours", s.getHours());
+            list.add(m);
+        }
+        return list;
+    }
     // -----------------------------------------------------------
     // GET /registration/confirmation/:id
     //

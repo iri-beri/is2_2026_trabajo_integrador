@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción a Materias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="min-h-screen p-6"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
+
+    <div class="max-w-4xl mx-auto">
+
+        <div class="bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
+
+            <div class="px-8 py-6 border-b border-gray-100">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="text-3xl">📚</span>
+                    <h1 class="text-2xl font-extrabold text-gray-900">
+                        Inscripción a Materias
+                    </h1>
+                </div>
+
+                <p class="text-gray-500 text-sm">
+                    Seleccioná un alumno para inscribirlo en una materia.
+                </p>
+            </div>
+
+            <div class="p-6">
+
+                {{#hasStudents}}
+                <div class="space-y-4">
+
+                    {{#students}}
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between
+                                bg-gray-50 border border-gray-200 rounded-lg
+                                px-5 py-4 hover:shadow-md transition duration-300">
+
+                        <div>
+                            <p class="font-semibold text-gray-800 text-lg">
+                                {{surname}}, {{name}}
+                            </p>
+
+                            <p class="text-sm text-gray-500">
+                                DNI: {{dni}}
+                            </p>
+                        </div>
+
+                        <a href="/registration/create?student_dni={{dni}}"
+                           class="mt-4 md:mt-0 bg-purple-600 text-white text-sm font-bold
+                                  py-2 px-6 rounded-full hover:bg-purple-700
+                                  transition duration-300 shadow text-center">
+                            Inscribir
+                        </a>
+
+                    </div>
+                    {{/students}}
+
+                </div>
+                {{/hasStudents}}
+
+                {{^hasStudents}}
+                <div class="text-center py-12">
+                    <div class="text-5xl mb-3">🎓</div>
+
+                    <p class="text-gray-500 italic">
+                        No hay alumnos registrados.
+                    </p>
+                </div>
+                {{/hasStudents}}
+
+            </div>
+
+            <div class="bg-gray-50 border-t border-gray-200 px-8 py-4">
+                <a href="/dashboard/admin"
+                   class="text-purple-600 hover:underline text-sm font-medium">
+                    ← Volver al Dashboard
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

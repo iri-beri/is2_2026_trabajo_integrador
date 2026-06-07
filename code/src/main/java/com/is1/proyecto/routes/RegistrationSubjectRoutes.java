@@ -21,6 +21,7 @@ public class RegistrationSubjectRoutes {
     // Rutas de inscripción de alumnos a materias
     // -----------------------------------------------------------
     public void register() {
+        get("/registration",                     controller::showStudents); 
         get("/registration/create",              controller::showForm);
         post("/registration/new",                controller::create);
         get("/registration/confirmation/:id",    controller::showConfirmation);

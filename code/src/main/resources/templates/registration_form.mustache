@@ -30,46 +30,34 @@
         </div>
         {{/errorMessage}}
 
-        <form action="/registration/new" method="post" class="space-y-5">
+        <form method="post" action="/registration/new"
+            class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
 
-            <div>
-                <label for="student_dni"
-                       class="block text-sm font-semibold text-gray-700 mb-2">
-                    DNI del Alumno
-                </label>
+            <input type="hidden" name="student_dni" value="{{studentDni}}" />
 
-                <input
-                    type="text"
-                    id="student_dni"
-                    name="student_dni"
+            {{#hasAvailable}}
+            <select name="subject_id"
                     required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
-                    placeholder="Ingrese el DNI" />
-            </div>
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm text-gray-700 bg-white">
+                <option value="" disabled selected>— Seleccioná una materia —</option>
+                {{#availableSubjects}}
+                <option value="{{id}}">{{name}} (Cód. {{code}} · {{hours}}h)</option>
+                {{/availableSubjects}}
+            </select>
 
-            <div>
-                <label for="subject_id"
-                       class="block text-sm font-semibold text-gray-700 mb-2">
-                    ID de la Materia
-                </label>
-
-                <input
-                    type="number"
-                    id="subject_id"
-                    name="subject_id"
-                    required
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
-                    placeholder="Ingrese el ID de la materia" />
-            </div>
-
-            <button
-                type="submit"
-                class="w-full bg-purple-600 text-white py-3 rounded-full font-bold hover:bg-purple-700 transition duration-300 shadow">
-                Inscribir Alumno
+            <button type="submit"
+                    class="bg-purple-600 text-white py-2 px-6 rounded-full font-bold text-sm hover:bg-purple-700 transition duration-300 shadow hover:scale-105 transform whitespace-nowrap">
+                + Inscribir
             </button>
+            {{/hasAvailable}}
+
+            {{^hasAvailable}}
+            <p class="text-sm text-gray-500 italic">
+                El alumno ya está inscripto en todas las materias disponibles de su carrera.
+            </p>
+            {{/hasAvailable}}
 
         </form>
-
         <div class="mt-6 text-center">
             <a href="/dashboard/admin"
                class="text-purple-600 hover:underline text-sm font-medium">
