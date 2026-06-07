@@ -68,6 +68,7 @@ public class ProfessorDashboardController extends BaseController {
             for (int i = 0; i < subjects.size(); i++) {
                 Subject s = subjects.get(i);
                 Map<String, Object> row = new HashMap<>();
+                row.put("subjectId",      s.getLongId());
                 row.put("code",           s.getCode());
                 row.put("name",           s.getName());
                 row.put("hours",          s.getHours());
