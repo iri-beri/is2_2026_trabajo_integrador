@@ -2,27 +2,82 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscribir Alumno a Materia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>:root { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen p-4"
+      style="background: linear-gradient(135deg, #0d3f6e 0%, #1370a2 50%, #0f6e56 100%);">
 
-    <h1>Inscribir Alumno a Materia</h1>
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-200">
 
-    {{#errorMessage}}
-        <p style="color: red;">{{errorMessage}}</p>
-    {{/errorMessage}}
+        <div class="text-center mb-6">
+            <p class="text-4xl mb-2">📝</p>
+            <h1 class="text-2xl font-extrabold text-gray-900">
+                Inscribir Alumno a Materia
+            </h1>
+            <p class="text-gray-500 text-sm mt-1">
+                Complete los datos para registrar una nueva inscripción.
+            </p>
+        </div>
 
-    <form action="/registration/new" method="post">
+        {{#errorMessage}}
+        <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+            <p class="text-red-700 text-sm font-medium">
+                {{errorMessage}}
+            </p>
+        </div>
+        {{/errorMessage}}
 
-        <label for="student_dni">DNI del Alumno</label>
-        <input type="text" id="student_dni" name="student_dni" required />
+        <form action="/registration/new" method="post" class="space-y-5">
 
-        <label for="subject_id">ID de la Materia</label>
-        <input type="number" id="subject_id" name="subject_id" required />
+            <div>
+                <label for="student_dni"
+                       class="block text-sm font-semibold text-gray-700 mb-2">
+                    DNI del Alumno
+                </label>
 
-        <button type="submit">Inscribir</button>
+                <input
+                    type="text"
+                    id="student_dni"
+                    name="student_dni"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
+                    placeholder="Ingrese el DNI" />
+            </div>
 
-    </form>
+            <div>
+                <label for="subject_id"
+                       class="block text-sm font-semibold text-gray-700 mb-2">
+                    ID de la Materia
+                </label>
+
+                <input
+                    type="number"
+                    id="subject_id"
+                    name="subject_id"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition"
+                    placeholder="Ingrese el ID de la materia" />
+            </div>
+
+            <button
+                type="submit"
+                class="w-full bg-purple-600 text-white py-3 rounded-full font-bold hover:bg-purple-700 transition duration-300 shadow">
+                Inscribir Alumno
+            </button>
+
+        </form>
+
+        <div class="mt-6 text-center">
+            <a href="/dashboard/admin"
+               class="text-purple-600 hover:underline text-sm font-medium">
+                ← Volver al Dashboard
+            </a>
+        </div>
+
+    </div>
 
 </body>
 </html>

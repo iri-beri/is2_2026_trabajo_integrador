@@ -173,25 +173,75 @@ CREATE TABLE IF NOT EXISTS career_students (
     FOREIGN KEY (career_id)  REFERENCES careers(id)           ON DELETE CASCADE,
     FOREIGN KEY (student_id) REFERENCES students(person_id)   ON DELETE CASCADE
 );
-
 -- =============================================================
--- GRADES — notas cargadas por profesores a alumnos por materia
--- Agregar al final de scheme.sql
+-- EXAMS — association between Student and Subject
+-- Stores exam records including date and grade.
 -- =============================================================
-CREATE TABLE IF NOT EXISTS grades (
+CREATE TABLE IF NOT EXISTS exams (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+
     student_id  INTEGER NOT NULL,
     subject_id  INTEGER NOT NULL,
-    professor_id INTEGER NOT NULL,
-    grade       REAL    NOT NULL,
-    description TEXT,
-    date        DATE    NOT NULL,
- 
+
+    date        DATE NOT NULL,
+    grade       REAL NOT NULL,
+
     created_at  DATETIME,
     updated_at  DATETIME,
- 
-    FOREIGN KEY (student_id)   REFERENCES students(person_id)   ON DELETE CASCADE,
-    FOREIGN KEY (subject_id)   REFERENCES subjects(id)          ON DELETE CASCADE,
-    FOREIGN KEY (professor_id) REFERENCES professors(person_id) ON DELETE CASCADE
+
+    FOREIGN KEY(student_id)
+        REFERENCES students(person_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY(subject_id)
+        REFERENCES subjects(id)
+        ON DELETE CASCADE
 );
- 
+-- =============================================================
+-- PERIODS — association between Professor and Subject
+-- Represents academic teaching periods for a subject.
+-- =============================================================
+CREATE TABLE IF NOT EXISTS periods (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    professor_person_id INTEGER NOT NULL,
+    subject_id          INTEGER NOT NULL,
+
+    start_date          DATE NOT NULL,
+    end_date            DATE NOT NULL,
+
+    created_at          DATETIME,
+    updated_at          DATETIME,
+
+    FOREIGN KEY(professor_person_id)
+        REFERENCES professors(person_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY(subject_id)
+        REFERENCES subjects(id)
+        ON DELETE CASCADE
+);
+-- =============================================================
+-- REQUIREMENTS — subject prerequisites
+-- Defines prerequisite subjects and required completion conditions.
+-- =============================================================
+CREATE TABLE IF NOT EXISTS requirements (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    subject_id          INTEGER NOT NULL,
+    required_subject_id INTEGER NOT NULL,
+
+    condition           TEXT NOT NULL
+        CHECK(condition IN ('REGULAR', 'APPROVED')),
+
+    created_at          DATETIME,
+    updated_at          DATETIME,
+
+    FOREIGN KEY(subject_id)
+        REFERENCES subjects(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY(required_subject_id)
+        REFERENCES subjects(id)
+        ON DELETE CASCADE
+);
