@@ -1,6 +1,7 @@
 # Maven
 target/
-
+#Imagen tar
+proyecto-is.tar
 # Base de datos local SQLite
 db/*.db
 
