@@ -245,3 +245,12 @@ CREATE TABLE IF NOT EXISTS requirements (
         REFERENCES subjects(id)
         ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS grades (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id  INTEGER NOT NULL,
+    subject_id  INTEGER NOT NULL,
+    professor_id INTEGER NOT NULL,
+    grade       REAL,
+    description TEXT,
+    date        TEXT
+);
