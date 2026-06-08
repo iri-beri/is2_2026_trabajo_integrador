@@ -1,10 +1,9 @@
 package com.is1.proyecto.services;
 
+import org.javalite.activejdbc.Base;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.is1.proyecto.models.Person;
-import com.is1.proyecto.models.Professor;
-import com.is1.proyecto.models.Student;
 import com.is1.proyecto.services.dto.ProfileUpdateDTO;
 
 public class SettingsService {
@@ -17,6 +16,11 @@ public class SettingsService {
             throw new ServiceException("Usuario inexistente", 404);
         }
 
+        Person existing = Person.findFirst("email = ? AND id <> ?", dto.email, dto.userId);
+        if (existing != null) {
+            throw new ServiceException("El email ya está siendo utilizado por otro usuario", 409);
+        }
+
         // -------------------------------------
         // Actualizar Person
         // -------------------------------------
@@ -25,45 +29,41 @@ public class SettingsService {
         person.setEmail(dto.email);
         person.setCellphone(dto.cellphone);
         person.setBirthdate(dto.birthdate);
-
-        Person existing = Person.findFirst("email = ? AND id <> ?", dto.email, dto.userId);
-
-        if (existing != null) {
-            throw new ServiceException("El email ya está siendo utilizado por otro usuario", 409);
-        }
-
         person.saveIt();
+
         // -------------------------------------
-        // Actualizar Person
+        // Actualizar Professor (SQL directo para evitar problema de PK)
         // -------------------------------------
         if (person.isProfessor()) {
-            Professor professor = person.getProfessor();
-            if (professor != null) {
-                professor.setDegree(dto.degree);
-                professor.setGraduateUniv(dto.graduateUniv);
-                professor.setPosition(dto.position);
-
-                professor.saveIt();
-            }
+            Base.exec(
+                "UPDATE professors SET degree = ?, graduate_univ = ?, position = ? WHERE person_id = ?",
+                dto.degree      != null ? dto.degree      : "",
+                dto.graduateUniv != null ? dto.graduateUniv : "",
+                dto.position    != null ? dto.position    : "",
+                dto.userId
+            );
         }
+
         // -------------------------------------
-        // Actualizar Student
+        // Actualizar Student (SQL directo para evitar problema de PK)
         // -------------------------------------
         if (person.isStudent()) {
-            Student student = person.getStudent();
-            if (student != null) {
-                student.setBirthplace(dto.birthplace);
-                student.setTownOfResidence(dto.townOfResidence);
-                student.setContactRelative(dto.contactRelative);
-                student.setContactCellphone(dto.contactCellphone);
-
-                student.saveIt();
-            }
+            Base.exec(
+                "UPDATE students SET birthplace = ?, town_of_residence = ?, contact_relative = ?, contact_cellphone = ? WHERE person_id = ?",
+                dto.birthplace       != null ? dto.birthplace       : "",
+                dto.townOfResidence  != null ? dto.townOfResidence  : "",
+                dto.contactRelative  != null ? dto.contactRelative  : "",
+                dto.contactCellphone != null ? dto.contactCellphone : "",
+                dto.userId
+            );
         }
     }
 
-    // Cambiar de password
+    // -------------------------------------
+    // Cambiar password
+    // -------------------------------------
     public void changePassword(Long userId, String currentPassword, String newPassword, String confirmPassword) {
+
         Person person = Person.findById(userId);
 
         if (person == null) {
@@ -79,7 +79,6 @@ public class SettingsService {
         }
 
         if (newPassword.length() < 6) {
-
             throw new ServiceException("La contraseña debe tener al menos 6 caracteres", 400);
         }
 
